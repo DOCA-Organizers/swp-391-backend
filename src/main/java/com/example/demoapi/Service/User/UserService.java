@@ -1,0 +1,20 @@
+package com.example.demoapi.Service.User;
+
+import com.example.demoapi.Entity.User.User;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+public interface UserService {
+    User SearchUserById(String id);
+    User SearchUserByUserName(String username);
+    List<User> findAll();
+    boolean save(User user);
+    boolean saveUser_Role(User user);
+    boolean updateUserInfo(User user, String id);
+    boolean disableUserByUserName(String username);
+    boolean isUserIdDupplicated(String id);
+    boolean isUserNameDupplicated(String username);
+    boolean isEmailDupplicated(String email);
+    User login(String username, String password);
+
+}
