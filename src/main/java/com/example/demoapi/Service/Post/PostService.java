@@ -9,5 +9,7 @@ import java.util.List;
 public interface PostService {
     List<Post> findPostsByCategory(int categoryid);
     List<Post> findPostsByUser(String userid);
+    List<Post> searchPostsByTitle(String keyword);
 
+    boolean browsePost(String postid);
 }

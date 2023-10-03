@@ -1,12 +1,10 @@
 package com.example.demoapi.Service.Post;
 
-import com.example.demoapi.Entity.Post.Category;
 import com.example.demoapi.Entity.Post.Post;
 import com.example.demoapi.Repository.Category.CategoryRepository;
 import com.example.demoapi.Repository.Post.PostRepository;
 import com.example.demoapi.Repository.User.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,4 +24,15 @@ public class PostServiceImpl implements PostService{
   public List<Post> findPostsByUser(String userid){
     return postRepository.findPostByUser(userRepository.findUserById(userid));
   }
+
+  @Override
+  public List<Post> searchPostsByTitle(String keyword) {
+    return postRepository.searchPostsByTitle(keyword);
+  }
+
+  @Override
+  public boolean browsePost(String postid) {
+    return postRepository.browsePost(postid);
+  }
+
 }
