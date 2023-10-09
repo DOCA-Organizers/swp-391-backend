@@ -58,5 +58,6 @@ public class PostResource {
         List<Post> list = postService.showBookmarkPosts(userid);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
+    //hihihi
 }
 
