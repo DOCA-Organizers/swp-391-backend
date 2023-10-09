@@ -11,15 +11,28 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
-@Repository
 public interface MyUserRepository extends JpaRepository<User, String>{
     User findUserById(String id);
     User findUserByUserName(String username);
     User findUserByEmail(String email);
-    @Query(value = "update [dbo].[tblUser] set [statususer] = 0 where [username] = ?1", nativeQuery = true)
+    @Query(value = "update [dbo].[tblUser] set [statususer] = \n" +
+                        "case\n" +
+                            "when [statususer] = 1 then 0 \n" +
+                            "when [statususer] = 0 then 1 \n" +
+                        "end \n" +
+                        "where [username] = ?1", nativeQuery = true)
     @Modifying
     @Transactional
-    Integer disableUserByUserName(String username);
+    Integer changeStatusUserByUserName(String username);
+    @Query(value = "update [dbo].[tblUser] set [isban] = \n" +
+                        "case\n" +
+                            "when [isban] = 1 then 0 \n" +
+                            "when [isban] = 0 then 1 \n" +
+                        "end \n" +
+                        "where [username] = ?1", nativeQuery = true)
+    @Modifying
+    @Transactional
+    Integer changeBanStatusUserByUserName(String username);
     @Query(value = "update [dbo].[tblUser] set [password] = :password, [fullname] = :fullName, " +
             "[email] = :email, [dob] = :dob, [gender] = :gender, [image] = :img where [id] = :id", nativeQuery = true)
     @Modifying
@@ -27,6 +40,4 @@ public interface MyUserRepository extends JpaRepository<User, String>{
     Integer updateUserById(@Param("password") String password, @Param("fullName") String fullName, @Param("email") String email,
                            @Param("dob") Date dob, @Param("gender") boolean gender, @Param("img") String img, @Param("id") String id);
 
-   // @Query(value = "", nativeQuery = true)
-  //  Role GetRoleByUser();
 }

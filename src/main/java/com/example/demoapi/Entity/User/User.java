@@ -37,8 +37,11 @@ public class User {
     @Column(name = "statususer")
     private boolean status;
 
-    @Column(name = "image")
+    @Column(name = "img")
     private String img;
+
+    @Column(name = "isban")
+    private boolean isBanned;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
