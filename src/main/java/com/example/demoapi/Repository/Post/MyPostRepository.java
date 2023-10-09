@@ -13,6 +13,7 @@ import java.util.List;
 
 @Repository
 public interface MyPostRepository extends JpaRepository<Post,String> {
+    Post findPostById(String postid);
     List<Post> findPostsByCategory(Category category);
     List<Post> findPostByUser(User user);
     List<Post> searchPostById(String id);
@@ -24,5 +25,7 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
     @Transactional
     boolean browsePost(String postid);
 
+    @Query(value = "select * from tblPost where id in (select postid from tblBookmark where userid= ?1) order by createTime desc",nativeQuery = true)
+    List<Post> showPostbookmark(String userid);
 
 }

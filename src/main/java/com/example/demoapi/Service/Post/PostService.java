@@ -12,4 +12,7 @@ public interface PostService {
     List<Post> searchPostsByTitle(String keyword);
 
     boolean browsePost(String postid);
+
+    List<Post> showBookmarkPosts(String userid);
+
 }

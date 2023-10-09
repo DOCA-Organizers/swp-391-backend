@@ -13,12 +13,13 @@ import java.util.Date;
 @Data
 public class Bookmark {
     @Id
+    private int id;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "userid")
     private User userId;
 
-    @Id
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "postid")
@@ -26,5 +27,8 @@ public class Bookmark {
 
     @Column
     private Date createtime;
+
+    @Column
+    private boolean status;
 
 }

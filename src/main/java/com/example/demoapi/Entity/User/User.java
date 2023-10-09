@@ -1,5 +1,6 @@
 package com.example.demoapi.Entity.User;
 
+import com.example.demoapi.Entity.Post.Bookmark;
 import com.example.demoapi.Entity.Post.Post;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -47,4 +48,8 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Collection<Post> posts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Bookmark> bookmarks;
 }
