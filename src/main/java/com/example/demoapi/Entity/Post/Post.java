@@ -49,4 +49,8 @@ public class Post {
     @JsonIgnore
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<React> reacts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Report> reports;
 }

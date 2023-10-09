@@ -1,6 +1,9 @@
 package com.example.demoapi.Entity.User;
 
+import com.example.demoapi.Entity.Post.Comment;
 import com.example.demoapi.Entity.Post.Post;
+import com.example.demoapi.Entity.Post.React;
+import com.example.demoapi.Entity.Post.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -50,4 +53,16 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Collection<Post> posts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Collection<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Collection<React> reacts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Collection<Report> reports;
 }
