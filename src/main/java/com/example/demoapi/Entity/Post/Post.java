@@ -18,10 +18,10 @@ public class Post {
     private String postNumber;
     @Column(name= "content")
     private String  content;
+    @Column(name= "title")
+    private String title;
     @Column(name="status")
     private boolean status;
-    @Column(name="isbookmark")
-    private boolean isbookmark;
     @Column(name="createTime")
     private Date createtime;
     @Column(name="isactive")
