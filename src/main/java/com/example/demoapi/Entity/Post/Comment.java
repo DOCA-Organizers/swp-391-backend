@@ -38,5 +38,4 @@ public class Comment {
     @JsonIgnore
     @OneToMany(mappedBy = "commentId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<React> reacts;
-
 }

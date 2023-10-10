@@ -13,8 +13,11 @@ import java.util.List;
 
 @Repository
 public interface MyPostRepository extends JpaRepository<Post,String> {
-    Post findPostById(String postid);
     List<Post> findPostsByCategory(Category category);
+    List<Post> findPostByUser(User user);
+    Post findPostById(String id);
+    @Query(value = "select a.* from [dbo].[tblPost] a where a.[content] like %?1%", nativeQuery = true)
+    List<Post> findPostsByContent(String content);
     List<Post> findPostsByUser(User user);
     List<Post> searchPostById(String id);
     @Query(value = "select * from tblPost where content like %?%1 and status='true' order by createTime desc",nativeQuery = true)

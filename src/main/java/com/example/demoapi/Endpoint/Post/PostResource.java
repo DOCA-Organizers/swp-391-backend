@@ -2,8 +2,11 @@ package com.example.demoapi.Endpoint.Post;
 
 import com.example.demoapi.Entity.Post.Bookmark;
 import com.example.demoapi.Entity.Post.Category;
+import com.example.demoapi.Entity.Post.Comment;
 import com.example.demoapi.Entity.Post.Post;
 import com.example.demoapi.Entity.User.User;
+import com.example.demoapi.Repository.Category.CategoryRepository;
+import com.example.demoapi.Repository.Comment.CommentRepository;
 import com.example.demoapi.Repository.Bookmark.BookmarkRepository;
 import com.example.demoapi.Repository.Category.CategoryRepository;
 import com.example.demoapi.Service.Bookmark.BookmarkService;
@@ -38,14 +41,6 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("React failed!");
     }
 
-    @GetMapping("/react/count/{id}")
-    public ResponseEntity<?> countReact(@PathVariable("id") String id) {
-        if (postService.countReact(id) != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(postService.countReact(id));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
-    }
-
     @PostMapping("/report/{userid}/{id}")
     public ResponseEntity<?> reportAPostOrComment(@PathVariable("userid") String userid,
             @PathVariable("id") String id, @RequestBody String msg) {
@@ -77,6 +72,46 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(postService.showListPostWithNumberOfReport());
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Show list failed!");
+    }
+
+    @GetMapping("/post={postid}")
+    public ResponseEntity<?> getCommentByPost(@PathVariable("postid") String postid) {
+        List<Comment> list = postService.getCommentsByPost(postid);
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
+    @PostMapping("/comment/{userid}/{postid}")
+    public ResponseEntity<?> createComment(@PathVariable("userid") String userid,
+            @PathVariable("postid") String postid,
+            @RequestBody String content) {
+        if (postService.createComment(userid, postid, content)) {
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment failed!");
+    }
+
+    @GetMapping("/comment/count/{postid}")
+    public ResponseEntity<?> countReact(@PathVariable("postid") String postid) {
+        if (postService.countComment(postid) != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.countComment(postid));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count comment failed");
+    }
+
+    @PutMapping("/comment/edit/{commentid}")
+    public ResponseEntity<?> updateComment(@RequestBody String content, @PathVariable("commentid") String commentid) {
+        if (postService.updateComment(content, commentid)) {
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update Comment failed !");
+    }
+
+    @DeleteMapping("/comment/delete/{commentid}")
+    public ResponseEntity<?> deleteComment(@PathVariable("commentid") String commentid) {
+        if (postService.deleteComment(commentid)) {
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Comment failed !");
     }
 
     @GetMapping("/search/category={categoryid}")
