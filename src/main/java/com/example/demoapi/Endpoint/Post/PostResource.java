@@ -76,6 +76,14 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update Comment failed !");
     }
 
+    @DeleteMapping("/comment/delete/{commentid}")
+    public ResponseEntity<?> deleteComment(@PathVariable("commentid") String commentid){
+        if (postService.deleteComment(commentid)) {
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Comment failed !");
+    }
+
 }
 
 

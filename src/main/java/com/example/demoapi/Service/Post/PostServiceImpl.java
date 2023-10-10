@@ -54,7 +54,16 @@ public class PostServiceImpl implements PostService{
   }
   @Override
   public List<Comment> getCommentsByPost(String postid) {
-    return commentRepository.findCommentsByPostId(postRepository.findPostById(postid));
+    try {
+        return commentRepository.findCommentsByPostIdAndStatusIsTrue(postRepository.findPostById(postid));
+    } catch (DataIntegrityViolationException e) {
+      // Handle specific database constraint violation (e.g., duplicate entry)
+      e.printStackTrace();
+      return null;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   @Override
@@ -127,6 +136,20 @@ public class PostServiceImpl implements PostService{
     } catch (Exception e) {
       e.printStackTrace();
       return null;
+    }
+  }
+
+  @Override
+  public boolean deleteComment(String commentid) {
+    try {
+      return commentRepository.deleteComment(commentid) == 1;
+    } catch (DataIntegrityViolationException e) {
+      // Handle specific database constraint violation (e.g., duplicate entry)
+      e.printStackTrace();
+      return false;
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
     }
   }
 

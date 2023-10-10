@@ -17,4 +17,5 @@ public interface PostService {
     Integer countComment(String postid);
     boolean updateComment(String content, String commentid);
     Comment findCommentById(String commentid);
+    boolean deleteComment(String commentid);
 }
