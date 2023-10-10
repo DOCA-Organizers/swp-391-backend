@@ -15,8 +15,6 @@ public class Post {
     @Id
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private String id;
-    @Column(name= "postNumber")
-    private String postNumber;
     @Column(name= "content")
     private String  content;
     @Column(name="title")
@@ -44,5 +42,16 @@ public class Post {
     @OneToMany(mappedBy = "postid", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Bookmark> bookmarks;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<React> reacts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Report> reports;
 
 }

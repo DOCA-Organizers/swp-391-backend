@@ -1,6 +1,7 @@
 package com.example.demoapi.Endpoint.User;
 
 import com.example.demoapi.DTO.User.loginDTO;
+import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
 import com.example.demoapi.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,15 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user");
     }
 
+    @GetMapping("/role/{id}")
+    public ResponseEntity<?> getRoleByUserId(@PathVariable("id") String id) {
+        Role role = userService.getRoleByUserId(id);
+        if(role != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(role);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user's role");
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody User user){
         if(userService.isUserNameDupplicated(user.getUserName()) || userService.isEmailDupplicated(user.getEmail())) {
@@ -43,7 +53,7 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create User Failed !");
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/user/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String id){
         if(userService.SearchUserById(id) == null || user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
@@ -55,9 +65,29 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update User failed !");
     }
 
-    @DeleteMapping("/{username}")
+    @PutMapping("/role/{role}/{type}/{id}")
+    public ResponseEntity<?> updateUserRole(@PathVariable("role") String role, @PathVariable("type") String type, @PathVariable("id") String id){
+        if(userService.SearchUserById(id) == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        } else {
+            if (userService.updateUserRole(id, role, type)) {
+                return ResponseEntity.status(HttpStatus.OK).body(true);
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update User's role failed !");
+    }
+
+    @DeleteMapping("/disable/{username}")
     public ResponseEntity<?> disableUser(@PathVariable("username") String username) {
-        if(userService.disableUserByUserName(username)) {
+        if(userService.changeStatusUserByUserName(username)) {
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot disable.");
+    }
+
+    @DeleteMapping("/ban/{username}")
+    public ResponseEntity<?> banUser(@PathVariable("username") String username) {
+        if(userService.changeBanStatusUserByUserName(username)) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot disable.");
@@ -75,4 +105,5 @@ public class UserResource {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user");
        }
     }
+
 }
