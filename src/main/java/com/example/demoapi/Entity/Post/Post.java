@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -14,11 +15,9 @@ public class Post {
     @Id
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private String id;
-    @Column(name= "postNumber")
-    private String postNumber;
     @Column(name= "content")
     private String  content;
-    @Column(name= "title")
+    @Column(name="title")
     private String title;
     @Column(name="status")
     private boolean status;
@@ -38,4 +37,21 @@ public class Post {
     @ManyToOne
     @JoinColumn(name="userid",nullable = false)
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "postid", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Bookmark> bookmarks;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<React> reacts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Report> reports;
+
 }

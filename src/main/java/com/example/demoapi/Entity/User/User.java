@@ -1,6 +1,10 @@
 package com.example.demoapi.Entity.User;
 
+import com.example.demoapi.Entity.Post.Comment;
+import com.example.demoapi.Entity.Post.Bookmark;
 import com.example.demoapi.Entity.Post.Post;
+import com.example.demoapi.Entity.Post.React;
+import com.example.demoapi.Entity.Post.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -37,8 +41,11 @@ public class User {
     @Column(name = "statususer")
     private boolean status;
 
-    @Column(name = "image")
+    @Column(name = "img")
     private String img;
+
+    @Column(name = "isban")
+    private boolean isBanned;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -47,4 +54,18 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private Collection<Post> posts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Collection<Comment> comments;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Collection<React> reacts;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "userId")
+    private Collection<Report> reports;
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Bookmark> bookmarks;
 }

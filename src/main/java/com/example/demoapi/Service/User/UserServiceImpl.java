@@ -35,7 +35,15 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<User> findAll() {
-        return userRepository.findAll();
+        try {
+            return userRepository.findAll();
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -43,7 +51,6 @@ public class UserServiceImpl implements UserService{
         try {
             return userRepository.findUserById(id);
         } catch (DataIntegrityViolationException e) {
-            // Handle specific database constraint violation (e.g., duplicate entry)
             e.printStackTrace();
             return null;
         } catch (Exception e) {
@@ -62,11 +69,12 @@ public class UserServiceImpl implements UserService{
                 user.setId(userid);
             }
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setBanned(false);
+            user.setStatus(true);
             userRepository.save(user);
             saveUser_Role(user);
             return true;
         } catch (DataIntegrityViolationException e) {
-            // Handle specific database constraint violation (e.g., duplicate entry)
             e.printStackTrace();
             return false;
         } catch (Exception e) {
@@ -80,7 +88,7 @@ public class UserServiceImpl implements UserService{
         try{
             User_Role user_role = new User_Role();
             user_role.setUserId(user);
-            Role role = roleRepository.findRoleById(3);
+            Role role = roleRepository.findRoleByNameAndType("User", "All");
             user_role.setRoleId(role);
             Date currentDateTime = new Date();
             user_role.setDateStart(currentDateTime);
@@ -88,7 +96,6 @@ public class UserServiceImpl implements UserService{
             user_roleRepository.save(user_role);
             return true;
         } catch (DataIntegrityViolationException e) {
-            // Handle specific database constraint violation (e.g., duplicate entry)
             e.printStackTrace();
             return false;
         } catch (Exception e) {
@@ -102,7 +109,6 @@ public class UserServiceImpl implements UserService{
         try {
             return userRepository.findUserByUserName(username);
         } catch (DataIntegrityViolationException e) {
-            // Handle specific database constraint violation (e.g., duplicate entry)
             e.printStackTrace();
             return null;
         } catch (Exception e) {
@@ -117,7 +123,6 @@ public class UserServiceImpl implements UserService{
             return userRepository.updateUserById(bCryptPasswordEncoder.encode(user.getPassword()), user.getFullName(),
                     user.getEmail(), user.getDob(), user.isGender(), user.getImg(), id) == 1;
         } catch (DataIntegrityViolationException e) {
-            // Handle specific database constraint violation (e.g., duplicate entry)
             e.printStackTrace();
             return false;
         } catch (Exception e) {
@@ -127,11 +132,10 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public boolean disableUserByUserName(String username) {
+    public boolean changeStatusUserByUserName(String username) {
         try {
-            return userRepository.disableUserByUserName(username) == 1;
+            return userRepository.changeStatusUserByUserName(username) == 1;
         } catch (DataIntegrityViolationException e) {
-            // Handle specific database constraint violation (e.g., duplicate entry)
             e.printStackTrace();
             return false;
         } catch (Exception e) {
@@ -142,25 +146,105 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean isUserIdDupplicated(String id) {
-        return (userRepository.findUserById(id) != null);
+        try {
+            return (userRepository.findUserById(id) != null);
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public boolean isUserNameDupplicated(String username) {
-        return (userRepository.findUserByUserName(username) != null);
+        try {
+            return (userRepository.findUserByUserName(username) != null);
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
     @Override
     public boolean isEmailDupplicated(String email) {
-        return (userRepository.findUserByEmail(email) != null);
+        try {
+            return (userRepository.findUserByEmail(email) != null);
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
     public User login(String username,String password){
-    if (bCryptPasswordEncoder.matches(password,userRepository.findUserByUserName(username).getPassword())){
-        return userRepository.findUserByUserName(username);
+        try {
+            if (bCryptPasswordEncoder.matches(password,userRepository.findUserByUserName(username).getPassword())){
+                return userRepository.findUserByUserName(username);
+            }
+            else {
+                return null;
+            }
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-    else {
-        return null;
+
+    @Override
+    public boolean updateUserRole(String userId, String role, String type) {
+        try {
+            Date curDate = new Date();
+            User user = userRepository.findUserById(userId);
+            user_roleRepository.updateUserRole(curDate, user.getId());
+            User_Role user_role = new User_Role();
+            user_role.setUserId(user);
+            user_role.setRoleId(roleRepository.findRoleByNameAndType(role, type));
+            user_role.setDateStart(curDate);
+            user_role.setStatus(true);
+            user_roleRepository.save(user_role);
+            return true;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
+
+    @Override
+    public Role getRoleByUserId(String id) {
+        try {
+            return roleRepository.GetRoleByUserId(id);
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public boolean changeBanStatusUserByUserName(String username) {
+        try {
+            return userRepository.changeBanStatusUserByUserName(username) == 1;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
