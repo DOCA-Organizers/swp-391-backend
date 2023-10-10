@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "tblReport")
 @Data
@@ -18,6 +20,9 @@ public class Report {
 
     @Column(name = "status", nullable = false)
     private boolean status;
+
+    @Column(name = "createTime", nullable = false)
+    private Date createTime;
 
     @JsonIgnore
     @ManyToOne

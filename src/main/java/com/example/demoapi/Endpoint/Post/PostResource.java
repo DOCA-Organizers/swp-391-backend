@@ -35,12 +35,12 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @PostMapping("/react/post/{userid}/{id}")
-    public ResponseEntity<?> reactAPost(@PathVariable("userid") String userid, @PathVariable("id") String id){
+    @PostMapping("/react/{userid}/{id}")
+    public ResponseEntity<?> reactAPostOrComment(@PathVariable("userid") String userid, @PathVariable("id") String id){
         if(postService.reactAPostOrComment(userid, id, id)) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("React failed");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("React failed!");
     }
 
     @GetMapping("/react/count/{id}")
@@ -48,9 +48,41 @@ public class PostResource {
         if(postService.countReact(id) != null) {
             return ResponseEntity.status(HttpStatus.OK).body(postService.countReact(id));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
     }
 
+    @PostMapping("/report/{userid}/{id}")
+    public ResponseEntity<?> reportAPostOrComment(@PathVariable("userid") String userid,
+                                                  @PathVariable("id") String id, @RequestBody String msg){
+        if(postService.reportAPostOrComment(userid, id, id, msg)) {
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Report failed!");
+    }
+
+    @GetMapping("/report/count/{id}")
+    public ResponseEntity<?> countReport(@PathVariable("id") String id){
+        if(postService.countReport(id) != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.countReport(id));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
+    }
+
+    @GetMapping("/report/count")
+    public ResponseEntity<?> countPostByReport(){
+        if(postService.countPostByReport() != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.countPostByReport());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
+    }
+
+    @GetMapping("/report/list")
+    public ResponseEntity<?> showListPost(){
+        if(postService.showListPostWithNumberOfReport() != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.showListPostWithNumberOfReport());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Show list failed!");
+    }
 }
 
 
