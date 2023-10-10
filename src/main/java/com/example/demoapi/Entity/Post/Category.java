@@ -17,6 +17,7 @@ public class Category {
     private String name;
     @Column(name="pet_type")
     private String pet_type;
+
     @JsonIgnore
     @OneToMany(mappedBy = "category")
     private Collection<Post> posts;

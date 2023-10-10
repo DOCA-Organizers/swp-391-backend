@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Collection;
 import java.util.Date;
 
 @Entity
@@ -18,10 +19,10 @@ public class Post {
     private String postNumber;
     @Column(name= "content")
     private String  content;
+    @Column(name="title")
+    private String title;
     @Column(name="status")
     private boolean status;
-    @Column(name="isbookmark")
-    private boolean isbookmark;
     @Column(name="createTime")
     private Date createtime;
     @Column(name="isactive")
@@ -38,4 +39,10 @@ public class Post {
     @ManyToOne
     @JoinColumn(name="userid",nullable = false)
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "postid", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Bookmark> bookmarks;
+
+
 }
