@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,4 +37,30 @@ public class BookmarkServiceImpl implements BookmarkService{
             return null;
         }
     }
+
+    @Override
+    public boolean markthePost(String userid, String postid) {
+        try{
+            Bookmark bm = new Bookmark();
+            bm.setUserId(userRepository.findUserById(userid));
+            bm.setPostid(postRepository.findPostById(postid));
+            bm.setCreatetime(new Date());
+            bm.setStatus(true);
+            Bookmark check = bookmarkRepository.findBookmarkByUseridAndPostid(userid,postid);
+            if (check!=null){
+                bookmarkRepository.changeBookmarkStatus(check.getId());
+            }
+            else bookmarkRepository.save(bm);
+            return true;
+        }
+        catch(DataIntegrityViolationException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

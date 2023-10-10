@@ -35,7 +35,7 @@ public class PostServiceImpl implements PostService{
   @Override
   public List<Post> findPostsByUser(String userid){
     try{
-      return postRepository.findPostByUser(userRepository.findUserById(userid));
+      return postRepository.findPostsByUser(userRepository.findUserById(userid));
     }
     catch(DataIntegrityViolationException e){
       e.printStackTrace();

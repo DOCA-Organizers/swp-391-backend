@@ -15,7 +15,7 @@ import java.util.List;
 public interface MyPostRepository extends JpaRepository<Post,String> {
     Post findPostById(String postid);
     List<Post> findPostsByCategory(Category category);
-    List<Post> findPostByUser(User user);
+    List<Post> findPostsByUser(User user);
     List<Post> searchPostById(String id);
     @Query(value = "select * from tblPost where content like %?%1 and status='true' order by createTime desc",nativeQuery = true)
     List<Post> searchPostsByTitle(String keyword);

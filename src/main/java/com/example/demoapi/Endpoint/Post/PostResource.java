@@ -32,32 +32,43 @@ public class PostResource {
     @GetMapping("/search/category={categoryid}")
     public ResponseEntity<?> getPostbyCategory(@PathVariable("categoryid") int categoryid) {
         List<Post> list = postService.findPostsByCategory(categoryid);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        if (!list.isEmpty())
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The category is empty!!!");
     }
 
-    @GetMapping("/profile/post/userid={userid}&post")
+    @GetMapping("/profile/post/userid={userid}")
     public ResponseEntity<?> getPostsbyUser(@PathVariable("userid") String userid) {
         List<Post> list = postService.findPostsByUser(userid);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        if (list != null) return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
     }
 
     @GetMapping("/search/post/key={keyword}")
     public ResponseEntity<?> seachpostbyTitle(@PathVariable("keyword") String keyword) {
         List<Post> list = postService.searchPostsByTitle(keyword);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        if (list != null) return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Errol");
     }
 
     @GetMapping("/bookmark/userid={userid}&postid={postid}")
     public ResponseEntity<?> showbookmarkpost(@PathVariable("userid") String userid, @PathVariable("postid") String postid) {
         Bookmark mark = bookmarkService.findBookmark(userid, postid);
-    return ResponseEntity.status(HttpStatus.OK).body(mark);
+        if (mark != null) return ResponseEntity.status(HttpStatus.OK).body(mark);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
     }
 
     @GetMapping("/bookmark/List/userid={userid}")
-    public ResponseEntity<?> showlistbookmarkposts(@PathVariable("userid") String userid){
+    public ResponseEntity<?> showlistbookmarkposts(@PathVariable("userid") String userid) {
         List<Post> list = postService.showBookmarkPosts(userid);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        if (list != null) return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Do not have any bookmark");
     }
-    //hihihi
+
+    @PostMapping("/bookmark/{userid}/{postid}")
+    public ResponseEntity<?> Createbookmark(@PathVariable("userid") String userid ,@PathVariable("postid") String postid) {
+        if (bookmarkService.markthePost(userid,postid)) return ResponseEntity.status(HttpStatus.OK).body(true);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bookmark fail!!");
+    }
 }
 

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BookmarkService {
     Bookmark findBookmark(String userid,String postid);
+    boolean markthePost(String userid,String postid);
 }

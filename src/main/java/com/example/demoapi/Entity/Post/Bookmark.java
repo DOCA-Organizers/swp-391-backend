@@ -5,6 +5,7 @@ import com.example.demoapi.Entity.User.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Generated;
 
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 @Data
 public class Bookmark {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @JsonIgnore
