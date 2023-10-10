@@ -1,6 +1,7 @@
 package com.example.demoapi.Entity.User;
 
 import com.example.demoapi.Entity.Post.Comment;
+import com.example.demoapi.Entity.Post.Bookmark;
 import com.example.demoapi.Entity.Post.Post;
 import com.example.demoapi.Entity.Post.React;
 import com.example.demoapi.Entity.Post.Report;
@@ -65,4 +66,6 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Collection<Report> reports;
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<Bookmark> bookmarks;
 }

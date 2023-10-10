@@ -1,9 +1,12 @@
 package com.example.demoapi.Endpoint.Post;
 
+import com.example.demoapi.Entity.Post.Bookmark;
 import com.example.demoapi.Entity.Post.Category;
 import com.example.demoapi.Entity.Post.Post;
 import com.example.demoapi.Entity.User.User;
+import com.example.demoapi.Repository.Bookmark.BookmarkRepository;
 import com.example.demoapi.Repository.Category.CategoryRepository;
+import com.example.demoapi.Service.Bookmark.BookmarkService;
 import com.example.demoapi.Service.Post.PostService;
 import com.example.demoapi.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,28 +27,20 @@ public class PostResource {
     private UserService userService;
     @Autowired
     private CategoryRepository categoryRepository;
-    @GetMapping("/search/category={categoryid}")
-    public ResponseEntity<?> getPostbyCategory(@PathVariable("categoryid") int categoryid) {
-        List<Post> list = postService.findPostsByCategory(categoryid);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
-    }
-    @GetMapping("/profile/post/userid={userid}")
-    public ResponseEntity<?> getPostsbyUser(@PathVariable("userid") String userid){
-        List<Post> list = postService.findPostsByUser(userid);
-        return ResponseEntity.status(HttpStatus.OK).body(list);
-    }
+    @Autowired
+    private BookmarkService bookmarkService;
 
     @PostMapping("/react/{userid}/{id}")
-    public ResponseEntity<?> reactAPostOrComment(@PathVariable("userid") String userid, @PathVariable("id") String id){
-        if(postService.reactAPostOrComment(userid, id, id)) {
+    public ResponseEntity<?> reactAPostOrComment(@PathVariable("userid") String userid, @PathVariable("id") String id) {
+        if (postService.reactAPostOrComment(userid, id, id)) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("React failed!");
     }
 
     @GetMapping("/react/count/{id}")
-    public ResponseEntity<?> countReact(@PathVariable("id") String id){
-        if(postService.countReact(id) != null) {
+    public ResponseEntity<?> countReact(@PathVariable("id") String id) {
+        if (postService.countReact(id) != null) {
             return ResponseEntity.status(HttpStatus.OK).body(postService.countReact(id));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
@@ -53,36 +48,84 @@ public class PostResource {
 
     @PostMapping("/report/{userid}/{id}")
     public ResponseEntity<?> reportAPostOrComment(@PathVariable("userid") String userid,
-                                                  @PathVariable("id") String id, @RequestBody String msg){
-        if(postService.reportAPostOrComment(userid, id, id, msg)) {
+            @PathVariable("id") String id, @RequestBody String msg) {
+        if (postService.reportAPostOrComment(userid, id, id, msg)) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Report failed!");
     }
 
     @GetMapping("/report/count/{id}")
-    public ResponseEntity<?> countReport(@PathVariable("id") String id){
-        if(postService.countReport(id) != null) {
+    public ResponseEntity<?> countReport(@PathVariable("id") String id) {
+        if (postService.countReport(id) != null) {
             return ResponseEntity.status(HttpStatus.OK).body(postService.countReport(id));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
     }
 
     @GetMapping("/report/count")
-    public ResponseEntity<?> countPostByReport(){
-        if(postService.countPostByReport() != null) {
+    public ResponseEntity<?> countPostByReport() {
+        if (postService.countPostByReport() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(postService.countPostByReport());
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
     }
 
     @GetMapping("/report/list")
-    public ResponseEntity<?> showListPost(){
-        if(postService.showListPostWithNumberOfReport() != null) {
+    public ResponseEntity<?> showListPost() {
+        if (postService.showListPostWithNumberOfReport() != null) {
             return ResponseEntity.status(HttpStatus.OK).body(postService.showListPostWithNumberOfReport());
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Show list failed!");
     }
+
+    @GetMapping("/search/category={categoryid}")
+    public ResponseEntity<?> getPostbyCategory(@PathVariable("categoryid") int categoryid) {
+        List<Post> list = postService.findPostsByCategory(categoryid);
+        if (!list.isEmpty())
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The category is empty!!!");
+    }
+
+    @GetMapping("/profile/post/userid={userid}")
+    public ResponseEntity<?> getPostsbyUser(@PathVariable("userid") String userid) {
+        List<Post> list = postService.findPostsByUser(userid);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+    }
+
+    @GetMapping("/search/post/key={keyword}")
+    public ResponseEntity<?> seachpostbyTitle(@PathVariable("keyword") String keyword) {
+        List<Post> list = postService.searchPostsByTitle(keyword);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Errol");
+    }
+
+    @GetMapping("/bookmark/userid={userid}&postid={postid}")
+    public ResponseEntity<?> showbookmarkpost(@PathVariable("userid") String userid,
+            @PathVariable("postid") String postid) {
+        Bookmark mark = bookmarkService.findBookmark(userid, postid);
+        if (mark != null)
+            return ResponseEntity.status(HttpStatus.OK).body(mark);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+    }
+
+    @GetMapping("/bookmark/List/userid={userid}")
+    public ResponseEntity<?> showlistbookmarkposts(@PathVariable("userid") String userid) {
+        List<Post> list = postService.showBookmarkPosts(userid);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Do not have any bookmark");
+    }
+
+    @PostMapping("/bookmark/{userid}/{postid}")
+    public ResponseEntity<?> Createbookmark(@PathVariable("userid") String userid,
+            @PathVariable("postid") String postid) {
+        if (bookmarkService.markthePost(userid, postid))
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bookmark fail!!");
+    }
 }
-
-

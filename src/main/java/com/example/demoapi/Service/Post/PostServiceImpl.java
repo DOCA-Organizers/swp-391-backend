@@ -34,14 +34,6 @@
     private CommentRepository commentRepository;
     @Autowired
     private ReportRepository reportRepository;
-    @Override
-    public List<Post> findPostsByCategory(int categoryid){
-        return postRepository.findPostsByCategory(categoryRepository.findCategoryById(categoryid));
-    }
-    @Override
-    public List<Post> findPostsByUser(String userid){
-      return postRepository.findPostByUser(userRepository.findUserById(userid));
-    }
 
     @Override
     public boolean reactAPostOrComment(String userId, String postId, String commentId) {
@@ -79,6 +71,82 @@
         e.printStackTrace();
         return null;
       }
+    }
+
+  @Override
+  public List<Post> findPostsByCategory(int categoryid){
+    try{
+      return postRepository.findPostsByCategory(categoryRepository.findCategoryById(categoryid));
+    }
+    catch(DataIntegrityViolationException e){
+      e.printStackTrace();
+      return null;
+    }
+    catch (Exception e){
+      e.printStackTrace();
+      return null;
+    }
+
+  }
+  @Override
+  public List<Post> findPostsByUser(String userid){
+    try{
+      return postRepository.findPostsByUser(userRepository.findUserById(userid));
+    }
+    catch(DataIntegrityViolationException e){
+      e.printStackTrace();
+      return null;
+    }
+    catch (Exception e){
+      e.printStackTrace();
+      return null;
+    }
+
+  }
+
+  @Override
+  public List<Post> searchPostsByTitle(String keyword) {
+    try{
+      return postRepository.searchPostsByTitle(keyword);
+    }
+    catch(DataIntegrityViolationException e){
+      e.printStackTrace();
+      return null;
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+  @Override
+  public boolean browsePost(String postid) {
+    try{
+      return postRepository.browsePost(postid);
+    }
+    catch(DataIntegrityViolationException e){
+      e.printStackTrace();
+      return false;
+    }
+    catch (Exception e){
+      e.printStackTrace();
+      return false;
+    }
+
+  }
+
+  @Override
+  public List<Post> showBookmarkPosts(String userid) {
+    try{
+      return postRepository.showPostbookmark(userid);
+    }
+    catch(DataIntegrityViolationException e){
+      e.printStackTrace();
+      return null;
+    }
+    catch (Exception e){
+      e.printStackTrace();
+      return null;
+    }
   }
 
     @Override

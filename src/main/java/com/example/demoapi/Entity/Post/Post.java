@@ -17,7 +17,7 @@ public class Post {
     private String id;
     @Column(name= "content")
     private String  content;
-    @Column(name = "title")
+    @Column(name="title")
     private String title;
     @Column(name="status")
     private boolean status;
@@ -53,4 +53,5 @@ public class Post {
     @JsonIgnore
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Report> reports;
+
 }

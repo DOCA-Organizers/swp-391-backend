@@ -18,5 +18,10 @@ public interface PostService {
     Integer countReport(String id);
     Integer countPostByReport();
     List<ReportDTO> showListPostWithNumberOfReport();
+    List<Post> searchPostsByTitle(String keyword);
+
+    boolean browsePost(String postid);
+
+    List<Post> showBookmarkPosts(String userid);
 
 }
