@@ -1,5 +1,6 @@
 package com.example.demoapi.Endpoint.Post;
 
+import com.example.demoapi.DTO.Post.createDTO;
 import com.example.demoapi.Entity.Post.Bookmark;
 import com.example.demoapi.Entity.Post.Category;
 import com.example.demoapi.Entity.Post.Comment;
@@ -9,6 +10,7 @@ import com.example.demoapi.Repository.Category.CategoryRepository;
 import com.example.demoapi.Repository.Comment.CommentRepository;
 import com.example.demoapi.Repository.Bookmark.BookmarkRepository;
 import com.example.demoapi.Repository.Category.CategoryRepository;
+import com.example.demoapi.Repository.Post.PostRepository;
 import com.example.demoapi.Service.Bookmark.BookmarkService;
 import com.example.demoapi.Service.Post.PostService;
 import com.example.demoapi.Service.User.UserService;
@@ -18,7 +20,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.channels.Pipe;
+import java.security.PublicKey;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/api")
 @RestController
@@ -162,5 +168,32 @@ public class PostResource {
         if (bookmarkService.markthePost(userid, postid))
             return ResponseEntity.status(HttpStatus.OK).body(true);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bookmark fail!!");
+    }
+    @PutMapping("/profile/post/id={postid}")
+    public ResponseEntity<?> changeExchange(@PathVariable("postid") String postid) {
+    boolean result = postService.changeExchange(postid);
+        if (result)
+            return ResponseEntity.status(HttpStatus.OK).body(result);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't change the exchange!!");
+    }
+    @PostMapping("/CreatePost")
+    public ResponseEntity<?> createPost(@RequestBody createDTO createDTO){
+        Post post = new Post();
+        post.setId(UUID.randomUUID().toString());
+        post.setCategory(categoryRepository.findCategoryById(createDTO.getCategoryid()));
+        post.setUser(userService.SearchUserById(createDTO.getUserid()));
+        post.setStatus(true);
+        post.setCreatetime(new Date());
+        post.setContent(createDTO.getContent());
+        post.setTitle(createDTO.getTitle());
+        post.setExchange(createDTO.isExchange());
+        if (createDTO.isExchange()) {
+            post.setIsactive(true);
+        }
+        else post.setIsactive(false);
+        if(postService.createPost(post)){
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't create Post");
     }
 }

@@ -31,4 +31,17 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
     @Query(value = "select * from tblPost where id in (select postid from tblBookmark where userid= ?1) order by createTime desc",nativeQuery = true)
     List<Post> showPostbookmark(String userid);
 
+    @Query(value = "update tblPost \n" +
+            "set [exchange] = \n" +
+            "case \n" +
+            "when [exchange] = 1 then 0\n" +
+            "when [exchange] = 0 then 1\n" +
+            "end\n" +
+            "where [id] = ?1", nativeQuery = true)
+    @Modifying
+    @Transactional
+    Integer changePostExchange(String postid);
+
+
+
 }

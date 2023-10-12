@@ -33,4 +33,6 @@ public interface PostService {
 
     List<Post> showBookmarkPosts(String userid);
 
+    boolean changeExchange(String postid);
+    boolean createPost(Post post);
 }

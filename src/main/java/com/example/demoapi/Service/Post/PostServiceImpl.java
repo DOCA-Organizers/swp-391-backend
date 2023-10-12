@@ -177,7 +177,38 @@ import com.example.demoapi.Entity.Post.Post;
     }
   }
 
-  @Override
+    @Override
+    public boolean changeExchange(String postid) {
+      try{
+        return postRepository.changePostExchange(postid)==1;
+      }
+      catch(DataIntegrityViolationException e){
+        e.printStackTrace();
+        return false;
+      }
+      catch (Exception e){
+        e.printStackTrace();
+        return false;
+      }
+    }
+
+    @Override
+    public boolean createPost(Post post) {
+      try{
+        postRepository.save(post);
+        return true;
+      }
+      catch(DataIntegrityViolationException e){
+        e.printStackTrace();
+        return false;
+      }
+      catch (Exception e){
+        e.printStackTrace();
+        return false;
+      }
+    }
+
+    @Override
   public boolean createComment(String userId, String postId, String content) {
     try {
       Comment comment = new Comment();
@@ -340,4 +371,5 @@ import com.example.demoapi.Entity.Post.Post;
         return null;
       }
     }
+
 }
