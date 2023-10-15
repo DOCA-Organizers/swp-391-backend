@@ -19,11 +19,14 @@ public class Comment {
     @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "createTime", nullable = false)
+    @Column(name = "createtime", nullable = false)
     private Date createTime;
 
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @Column(name = "isactive", nullable = false)
+    private boolean isActive;
+
+    @Column(name = "isprivate", nullable = false)
+    private boolean isPrivate;
 
     @JsonIgnore
     @ManyToOne

@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
 
 public interface MyUser_RoleRepository extends JpaRepository<User_Role, Integer> {
-    @Query(value = "update [dbo].[tblUser_Role] set [dateend] = ?1, [status] = 'false' where [userid] = ?2", nativeQuery = true)
+    @Query(value = "update [dbo].[tblUser_Role] set [dateend] = ?1, [isactive] = 'false' where [userid] = ?2", nativeQuery = true)
     @Modifying
     @Transactional
     Integer updateUserRole(Date dateEnd, String id);

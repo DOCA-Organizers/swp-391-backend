@@ -6,6 +6,7 @@ import com.example.demoapi.Entity.Post.Comment;
 import com.example.demoapi.Entity.Post.Post;
   import com.example.demoapi.Entity.Post.React;
   import com.example.demoapi.Entity.Post.Report;
+  import com.example.demoapi.Repository.Bookmark.BookmarkRepository;
   import com.example.demoapi.Repository.Category.CategoryRepository;
   import com.example.demoapi.Repository.Comment.CommentRepository;
   import com.example.demoapi.Repository.Post.PostRepository;
@@ -35,31 +36,8 @@ import com.example.demoapi.Entity.Post.Post;
     private CommentRepository commentRepository;
     @Autowired
     private ReportRepository reportRepository;
-
-    @Override
-    public boolean reactAPostOrComment(String userId, String postId, String commentId) {
-      try {
-        React react = new React();
-        react.setStatus(true);
-        react.setUserId(userRepository.findUserById(userId));
-        react.setPostId(postRepository.findPostById(postId));
-        react.setCommentId(commentRepository.findCommentById(commentId));
-        React checkReact = reactRepository.findReactByUserIdAndPostIdAndCommentId(userRepository.findUserById(userId),
-                postRepository.findPostById(postId), commentRepository.findCommentById(commentId));
-        if(checkReact != null) {
-            reactRepository.changeReactStatus(checkReact.getId());
-        } else {
-          reactRepository.save(react);
-        }
-        return true;
-      } catch (DataIntegrityViolationException e) {
-        e.printStackTrace();
-        return false;
-      } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-      }
-  }
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
 
     @Override
     public Integer countReact(String id) {
@@ -138,7 +116,7 @@ import com.example.demoapi.Entity.Post.Post;
   @Override
   public List<Comment> getCommentsByPost(String postid) {
     try {
-        return commentRepository.findCommentsByPostIdAndStatusIsTrue(postRepository.findPostById(postid));
+        return commentRepository.findCommentsByPostIdAndIsActiveIsTrue(postRepository.findPostById(postid));
     } catch (DataIntegrityViolationException e) {
       // Handle specific database constraint violation (e.g., duplicate entry)
       e.printStackTrace();
@@ -196,7 +174,7 @@ import com.example.demoapi.Entity.Post.Post;
 
       comment.setContent(content);
       comment.setCreateTime(new Date());
-      comment.setStatus(true);
+      comment.setActive(true);
       comment.setUserId(userRepository.findUserById(userId));
       comment.setPostId(postRepository.findPostById(postId));
       commentRepository.save(comment);
@@ -253,7 +231,10 @@ import com.example.demoapi.Entity.Post.Post;
   @Override
   public boolean deleteComment(String commentid) {
     try {
-      return commentRepository.deleteComment(commentid) == 1;
+      commentRepository.deleteCommentByCommentId(commentid);
+      reactRepository.deleteReactById(commentid);
+      reportRepository.deleteReportById(commentid);
+      return true;
     } catch (DataIntegrityViolationException e) {
       // Handle specific database constraint violation (e.g., duplicate entry)
       e.printStackTrace();
@@ -263,6 +244,51 @@ import com.example.demoapi.Entity.Post.Post;
       return false;
     }
   }
+
+//    @Override
+//    public boolean deleteReactById(String id) {
+//      try {
+//        reactRepository.deleteReactById(id);
+//        return true;
+//      } catch (DataIntegrityViolationException e) {
+//        // Handle specific database constraint violation (e.g., duplicate entry)
+//        e.printStackTrace();
+//        return false;
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//        return false;
+//      }
+//    }
+//
+//    @Override
+//    public boolean deleteReportById(String id) {
+//      try {
+//        reportRepository.deleteReportById(id);
+//        return true;
+//      } catch (DataIntegrityViolationException e) {
+//        // Handle specific database constraint violation (e.g., duplicate entry)
+//        e.printStackTrace();
+//        return false;
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//        return false;
+//      }
+//    }
+//
+//    @Override
+//    public boolean deleteBookmarkByPostId(String postid) {
+//      try {
+//        bookmarkRepository.deleteBookmarkByPostId(postid);
+//        return true;
+//      } catch (DataIntegrityViolationException e) {
+//        // Handle specific database constraint violation (e.g., duplicate entry)
+//        e.printStackTrace();
+//        return false;
+//      } catch (Exception e) {
+//        e.printStackTrace();
+//        return false;
+//      }
+//    }
 
     @Override
     public boolean reportAPostOrComment(String userId, String postId, String commentId, String msg) {
@@ -285,12 +311,42 @@ import com.example.demoapi.Entity.Post.Post;
             }
           }
           report.setMessage(msg);
-          report.setStatus(true);
+          report.setActive(true);
           report.setCreateTime(new Date());
           report.setUserId(userRepository.findUserById(userId));
           report.setPostId(postRepository.findPostById(postId));
           report.setCommentId(commentRepository.findCommentById(commentId));
           reportRepository.save(report);
+          return true;
+        }
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return false;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+      }
+    }
+
+    @Override
+    public boolean reactAPostOrComment(String userId, String postId, String commentId) {
+      try {
+        if(postRepository.findPostById(postId) == null && commentRepository.findCommentById(commentId) == null) {
+          return false;
+        } else {
+          React react = new React();
+          react.setActive(true);
+          react.setUserId(userRepository.findUserById(userId));
+          react.setPostId(postRepository.findPostById(postId));
+          react.setCommentId(commentRepository.findCommentById(commentId));
+          react.setCreateTime(new Date());
+          React checkReact = reactRepository.findReactByUserIdAndPostIdAndCommentId(userRepository.findUserById(userId),
+                  postRepository.findPostById(postId), commentRepository.findCommentById(commentId));
+          if (checkReact != null) {
+            reactRepository.changeReactStatus(checkReact.getId());
+          } else {
+            reactRepository.save(react);
+          }
           return true;
         }
       } catch (DataIntegrityViolationException e) {
@@ -338,6 +394,24 @@ import com.example.demoapi.Entity.Post.Post;
       } catch (Exception e) {
         e.printStackTrace();
         return null;
+      }
+    }
+
+    @Override
+    public boolean deletePostByPostID(String postId) {
+      try {
+        postRepository.deletePostByPostId(postId);
+        commentRepository.deleteCommentByPostId(postId);
+        reactRepository.deleteReactById(postId);
+        reportRepository.deleteReportById(postId);
+        bookmarkRepository.deleteBookmarkByPostId(postId);
+        return true;
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return false;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return false;
       }
     }
 }

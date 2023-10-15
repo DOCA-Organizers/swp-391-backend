@@ -6,7 +6,9 @@ import com.example.demoapi.Entity.Post.Post;
 import com.example.demoapi.Entity.Post.React;
 import com.example.demoapi.Entity.Post.Report;
 import com.example.demoapi.Entity.User.User;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.ArrayList;
@@ -15,14 +17,24 @@ import java.util.List;
 public interface MyReportRepository extends JpaRepository<Report, String> {
     @Query(value = "SELECT COUNT(*) AS report_count\n" +
                     "FROM [dbo].[tblReport]\n" +
-                    "WHERE (postid = ?1 AND commentid IS NULL)\n" +
+                    "WHERE [isactive] = 1 and (postid = ?1 AND commentid IS NULL)\n" +
                     "OR (commentid = ?1 AND postid IS NULL);", nativeQuery = true)
     Integer countReport(String id);
-    @Query(value = "select count(distinct [postId]) from [dbo].[tblReport]", nativeQuery = true)
+    @Query(value = "select count(distinct [postid]) from [dbo].[tblReport] where [isactive] = 1", nativeQuery = true)
     Integer countPostByReport();
-    @Query(value = "select [postId], count([postId])\n" +
+    @Query(value = "UPDATE [dbo].[tblReport]\n" +
+                    "SET [isactive] = 0\n" +
+                    "WHERE\n" +
+                    "([commentid] IS NOT NULL AND [commentid] = ?1)\n" +
+                    "    OR\n" +
+                    "([postid] IS NOT NULL AND [postid] = ?1);", nativeQuery = true)
+    @Modifying
+    @Transactional
+    Integer deleteReportById(String id);
+    @Query(value = "select [postid], count([postid])\n" +
                     "from [dbo].[tblReport]\n" +
-                    "group by [postId]", nativeQuery = true)
+                    "where [isactive] = 1\n" +
+                    "group by [postid]", nativeQuery = true)
     List<Object[]> showListPostWithNumberOfReport();
     List<Report> findReportsByUserIdAndPostIdAndCommentId(User userId, Post postId, Comment commentId);
 

@@ -69,8 +69,8 @@ public class UserServiceImpl implements UserService{
                 user.setId(userid);
             }
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            user.setBanned(false);
-            user.setStatus(true);
+            user.setBan(false);
+            user.setActive(true);
             userRepository.save(user);
             saveUser_Role(user);
             return true;
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService{
             user_role.setRoleId(role);
             Date currentDateTime = new Date();
             user_role.setDateStart(currentDateTime);
-            user_role.setStatus(true);
+            user_role.setActive(true);
             user_roleRepository.save(user_role);
             return true;
         } catch (DataIntegrityViolationException e) {
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService{
     public boolean updateUserInfo(User user, String id) {
         try {
             return userRepository.updateUserById(bCryptPasswordEncoder.encode(user.getPassword()), user.getFullName(),
-                    user.getEmail(), user.getDob(), user.isGender(), user.getImg(), id) == 1;
+                    user.getEmail(), user.getDob(), user.isGender(), user.getAvt(), id) == 1;
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             return false;
@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService{
             user_role.setUserId(user);
             user_role.setRoleId(roleRepository.findRoleByNameAndType(role, type));
             user_role.setDateStart(curDate);
-            user_role.setStatus(true);
+            user_role.setActive(true);
             user_roleRepository.save(user_role);
             return true;
         } catch (DataIntegrityViolationException e) {

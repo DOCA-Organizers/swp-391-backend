@@ -15,10 +15,10 @@ public interface MyUserRepository extends JpaRepository<User, String>{
     User findUserById(String id);
     User findUserByUserName(String username);
     User findUserByEmail(String email);
-    @Query(value = "update [dbo].[tblUser] set [statususer] = \n" +
+    @Query(value = "update [dbo].[tblUser] set [isactive] = \n" +
                         "case\n" +
-                            "when [statususer] = 1 then 0 \n" +
-                            "when [statususer] = 0 then 1 \n" +
+                            "when [isactive] = 1 then 0 \n" +
+                            "when [isactive] = 0 then 1 \n" +
                         "end \n" +
                         "where [username] = ?1", nativeQuery = true)
     @Modifying
@@ -34,10 +34,10 @@ public interface MyUserRepository extends JpaRepository<User, String>{
     @Transactional
     Integer changeBanStatusUserByUserName(String username);
     @Query(value = "update [dbo].[tblUser] set [password] = :password, [fullname] = :fullName, " +
-            "[email] = :email, [dob] = :dob, [gender] = :gender, [image] = :img where [id] = :id", nativeQuery = true)
+            "[email] = :email, [dob] = :dob, [gender] = :gender, [avt] = :avt where [id] = :id", nativeQuery = true)
     @Modifying
     @Transactional
     Integer updateUserById(@Param("password") String password, @Param("fullName") String fullName, @Param("email") String email,
-                           @Param("dob") Date dob, @Param("gender") boolean gender, @Param("img") String img, @Param("id") String id);
+                           @Param("dob") Date dob, @Param("gender") boolean gender, @Param("avt") String avt, @Param("id") String id);
 
 }
