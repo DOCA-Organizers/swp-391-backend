@@ -15,22 +15,28 @@ public class Post {
     @Id
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private String id;
-    @Column(name= "content")
+
+    @Column(name= "content",nullable = false)
     private String  content;
-    @Column(name="title")
+
+    @Column(name="title",nullable = false)
     private String title;
-    @Column(name="status")
-    private boolean status;
-    @Column(name="createTime")
-    private Date createtime;
-    @Column(name="isactive")
-    private boolean isactive;
-    @Column(name="exchange")
-    private boolean exchange;
+
+    @Column(name="isactive",nullable = false)
+    private boolean isActive;
+
+    @Column(name="createtime",nullable = false)
+    private Date createTime;
+
+    @Column(name="issold",nullable = false)
+    private boolean isSold;
+
+    @Column(name="isexchange",nullable = false)
+    private boolean isExchange;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="id_category",nullable = false)
+    @JoinColumn(name="categoryid",nullable = false)
     private Category category;
 
     @JsonIgnore
@@ -39,7 +45,7 @@ public class Post {
     private User user;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "postid", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Bookmark> bookmarks;
 
     @JsonIgnore

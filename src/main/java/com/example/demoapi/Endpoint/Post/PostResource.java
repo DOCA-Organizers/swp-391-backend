@@ -151,7 +151,7 @@ public class PostResource {
         Bookmark mark = bookmarkService.findBookmark(userid, postid);
         if (mark != null)
             return ResponseEntity.status(HttpStatus.OK).body(mark);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
     }
 
     @GetMapping("/bookmark/List/userid={userid}")
@@ -160,6 +160,12 @@ public class PostResource {
         if (list != null)
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Do not have any bookmark");
+    }
+    @PutMapping("/browserpost/postid={postid}")
+    public ResponseEntity<?> browserPost(@PathVariable("postid") String postid){
+        if (postService.browsePost(postid))
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
     }
 
     @PostMapping("/bookmark/{userid}/{postid}")
@@ -182,15 +188,15 @@ public class PostResource {
         post.setId(UUID.randomUUID().toString());
         post.setCategory(categoryRepository.findCategoryById(createDTO.getCategoryid()));
         post.setUser(userService.SearchUserById(createDTO.getUserid()));
-        post.setStatus(true);
-        post.setCreatetime(new Date());
+        post.setActive(true);
+        post.setCreateTime(new Date());
         post.setContent(createDTO.getContent());
         post.setTitle(createDTO.getTitle());
-        post.setExchange(createDTO.isExchange());
-        if (createDTO.isExchange()) {
-            post.setIsactive(true);
+        post.setExchange(createDTO.isIsexchange());
+        if (createDTO.isIsexchange()) {
+            post.setSold(true);
         }
-        else post.setIsactive(false);
+        else post.setSold(false);
         if(postService.createPost(post)){
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }

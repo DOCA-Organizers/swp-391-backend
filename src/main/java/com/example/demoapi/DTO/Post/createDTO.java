@@ -11,5 +11,5 @@ public class createDTO {
     private Integer categoryid;
     private String  content;
     private String title;
-    private boolean exchange;
+    private boolean isexchange;
 }

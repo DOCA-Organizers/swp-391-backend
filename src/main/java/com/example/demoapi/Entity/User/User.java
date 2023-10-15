@@ -26,7 +26,7 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "fullName")
+    @Column(name = "fullname", nullable = false)
     private String fullName;
 
     @Column(name = "email", nullable = false, unique = true)
@@ -38,14 +38,14 @@ public class User {
     @Column(name = "gender")
     private boolean gender;
 
-    @Column(name = "statususer")
-    private boolean status;
-
-    @Column(name = "img")
-    private String img;
+    @Column(name = "isactive")
+    private boolean IsActive;
 
     @Column(name = "isban")
-    private boolean isBanned;
+    private boolean isBan;
+
+    @Column(name = "avt")
+    private String avt;
 
     @JsonIgnore
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -66,6 +66,7 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "userId")
     private Collection<Report> reports;
+
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Bookmark> bookmarks;
 }

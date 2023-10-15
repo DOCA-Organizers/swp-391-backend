@@ -40,7 +40,7 @@ import com.example.demoapi.Entity.Post.Post;
     public boolean reactAPostOrComment(String userId, String postId, String commentId) {
       try {
         React react = new React();
-        react.setStatus(true);
+        react.setActive(true);
         react.setUserId(userRepository.findUserById(userId));
         react.setPostId(postRepository.findPostById(postId));
         react.setCommentId(commentRepository.findCommentById(commentId));
@@ -227,7 +227,7 @@ import com.example.demoapi.Entity.Post.Post;
 
       comment.setContent(content);
       comment.setCreateTime(new Date());
-      comment.setStatus(true);
+      comment.setActive(true);
       comment.setUserId(userRepository.findUserById(userId));
       comment.setPostId(postRepository.findPostById(postId));
       commentRepository.save(comment);
@@ -316,7 +316,7 @@ import com.example.demoapi.Entity.Post.Post;
             }
           }
           report.setMessage(msg);
-          report.setStatus(true);
+          report.setActive(true);
           report.setCreateTime(new Date());
           report.setUserId(userRepository.findUserById(userId));
           report.setPostId(postRepository.findPostById(postId));

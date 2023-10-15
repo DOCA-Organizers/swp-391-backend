@@ -18,20 +18,20 @@ public class Report {
     @Column(name = "message")
     private String message;
 
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @Column(name = "isactive", nullable = false)
+    private boolean isActive;
 
-    @Column(name = "createTime", nullable = false)
+    @Column(name = "createtime", nullable = false)
     private Date createTime;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userid", nullable = false)
     private User userId;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "postId")
+    @JoinColumn(name = "postid")
     private Post postId;
 
     @JsonIgnore

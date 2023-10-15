@@ -20,10 +20,10 @@ public interface MyReactRepository extends JpaRepository<React, Integer> {
     React findReactByUserIdAndPostIdAndCommentId(User userId, Post postId, Comment commentId);
 
     @Query(value = "update [dbo].[tblReact] \n" +
-                    "set [status] = \n" +
+                    "set [isactive] = \n" +
                         "case \n" +
-                            "when [status] = 1 then 0\n" +
-                            "when [status] = 0 then 1\n" +
+                            "when [isactive] = 1 then 0\n" +
+                            "when [isactive] = 0 then 1\n" +
                         "end\n" +
                     "where [id] = ?1", nativeQuery = true)
     @Modifying

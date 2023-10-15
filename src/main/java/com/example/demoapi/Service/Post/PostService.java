@@ -28,11 +28,8 @@ public interface PostService {
     Integer countPostByReport();
     List<ReportDTO> showListPostWithNumberOfReport();
     List<Post> searchPostsByTitle(String keyword);
-
     boolean browsePost(String postid);
-
     List<Post> showBookmarkPosts(String userid);
-
     boolean changeExchange(String postid);
     boolean createPost(Post post);
 }

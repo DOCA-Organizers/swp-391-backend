@@ -25,12 +25,12 @@ public class Bookmark {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "postid")
-    private Post postid;
+    private Post postId;
 
-    @Column
-    private Date createtime;
+    @Column(name="createtime")
+    private Date createTime;
 
-    @Column
-    private boolean status;
+    @Column(name="isactive")
+    private boolean isactive;
 
 }
