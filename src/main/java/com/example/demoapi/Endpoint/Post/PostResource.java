@@ -1,10 +1,8 @@
 package com.example.demoapi.Endpoint.Post;
 
 import com.example.demoapi.DTO.Post.createDTO;
-import com.example.demoapi.Entity.Post.Bookmark;
-import com.example.demoapi.Entity.Post.Category;
-import com.example.demoapi.Entity.Post.Comment;
-import com.example.demoapi.Entity.Post.Post;
+import com.example.demoapi.DTO.Post.markDTO;
+import com.example.demoapi.Entity.Post.*;
 import com.example.demoapi.Entity.User.User;
 import com.example.demoapi.Repository.Category.CategoryRepository;
 import com.example.demoapi.Repository.Comment.CommentRepository;
@@ -168,10 +166,9 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
     }
 
-    @PostMapping("/bookmark/{userid}/{postid}")
-    public ResponseEntity<?> Createbookmark(@PathVariable("userid") String userid,
-            @PathVariable("postid") String postid) {
-        if (bookmarkService.markthePost(userid, postid))
+    @PostMapping("/bookmark")
+    public ResponseEntity<?> Createbookmark(@RequestBody markDTO mark) {
+        if (bookmarkService.markthePost(mark.getUserid(), mark.getPostid()))
             return ResponseEntity.status(HttpStatus.OK).body(true);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bookmark fail!!");
     }

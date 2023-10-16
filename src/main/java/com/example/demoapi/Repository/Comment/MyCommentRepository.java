@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MyCommentRepository extends JpaRepository<Comment,String> {
-    List<Comment> findCommentsByPostIdAndStatusIsTrue(Post post);
+    List<Comment> findCommentsByPostIdAndIsActiveIsTrue(Post post);
     List<Comment> findCommentsByUserIdAndPostId(User user, Post post);
     @Query(value = "SELECT COUNT(*) AS comment_count\n" +
             "FROM [dbo].[tblComment]\n" +

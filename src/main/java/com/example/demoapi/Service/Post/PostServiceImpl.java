@@ -138,7 +138,7 @@ import com.example.demoapi.Entity.Post.Post;
   @Override
   public List<Comment> getCommentsByPost(String postid) {
     try {
-        return commentRepository.findCommentsByPostIdAndStatusIsTrue(postRepository.findPostById(postid));
+        return commentRepository.findCommentsByPostIdAndIsActiveIsTrue(postRepository.findPostById(postid));
     } catch (DataIntegrityViolationException e) {
       // Handle specific database constraint violation (e.g., duplicate entry)
       e.printStackTrace();

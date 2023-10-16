@@ -41,6 +41,4 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
     @Transactional
     Integer changePostExchange(String postid);
 
-
-
 }

@@ -1,6 +1,7 @@
 package com.example.demoapi.Endpoint.User;
 
 import com.example.demoapi.DTO.User.loginDTO;
+import com.example.demoapi.DTO.User.userDTO;
 import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
 import com.example.demoapi.Service.User.UserService;
@@ -32,13 +33,13 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user");
     }
 
-    @GetMapping("/role/{id}")
-    public ResponseEntity<?> getRoleByUserId(@PathVariable("id") String id) {
+
+    public Role getRoleByUserId(@PathVariable("id") String id) {
         Role role = userService.getRoleByUserId(id);
         if(role != null) {
-            return ResponseEntity.status(HttpStatus.OK).body(role);
+            return role;
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user's role");
+        return null;
     }
 
     @PostMapping("/register")
@@ -98,8 +99,12 @@ public class UserResource {
         String username = loginDTO.getUsername();
         String password = loginDTO.getPassword();
        User user = userService.login(username,password);
+       Role role = this.getRoleByUserId(user.getId());
        if(user!=null){
-            return ResponseEntity.status(HttpStatus.OK).body(user);
+           userDTO result = new userDTO();
+           result.setUser(user);
+           result.setRole(role);
+            return ResponseEntity.status(HttpStatus.OK).body(result);
        }
        else{
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user");
