@@ -6,9 +6,12 @@ import com.example.demoapi.Entity.User.User_Role;
 import com.example.demoapi.Repository.Role.RoleRepository;
 import com.example.demoapi.Repository.User.UserRepository;
 import com.example.demoapi.Repository.User_Role.User_RoleRepository;
+import com.example.demoapi.Security.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,16 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUserName(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return new CustomUserDetail(user);
+    }
 
     @Override
     public List<User> findAll() {

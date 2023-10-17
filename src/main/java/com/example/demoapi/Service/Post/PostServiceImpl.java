@@ -52,184 +52,184 @@ import com.example.demoapi.Entity.Post.Post;
       }
     }
 
-  @Override
-  public List<Post> findPostsByCategory(int categoryid){
-    try{
-      return postRepository.findPostsByCategory(categoryRepository.findCategoryById(categoryid));
-    }
-    catch(DataIntegrityViolationException e){
-      e.printStackTrace();
-      return null;
-    }
-    catch (Exception e){
-      e.printStackTrace();
-      return null;
-    }
-
-  }
-  @Override
-  public List<Post> findPostsByUser(String userid){
-    try{
-      return postRepository.findPostsByUser(userRepository.findUserById(userid));
-    }
-    catch(DataIntegrityViolationException e){
-      e.printStackTrace();
-      return null;
-    }
-    catch (Exception e){
-      e.printStackTrace();
-      return null;
-    }
-
-  }
-  @Override
-  public List<Post> findPostsByContent(String content){
-    return postRepository.findPostsByContent(content);
-  }
-
-  @Override
-  public Post findPostById(String id) {
-    try {
-      return postRepository.findPostById(id);
-    } catch (DataIntegrityViolationException e) {
-      // Handle specific database constraint violation (e.g., duplicate entry)
-      e.printStackTrace();
-      return null;
-    } catch (Exception e) {
-       e.printStackTrace();
-      return null;
-    } }
-  @Override
-  public List<Post> searchPostsByTitle(String keyword) {
-    try{
-      return postRepository.searchPostsByTitle(keyword);
-    }
-    catch(DataIntegrityViolationException e){
-      e.printStackTrace();
-      return null;
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-  @Override
-  public List<Comment> getCommentsByPost(String postid) {
-    try {
-        return commentRepository.findCommentsByPostIdAndIsActiveIsTrue(postRepository.findPostById(postid));
-    } catch (DataIntegrityViolationException e) {
-      // Handle specific database constraint violation (e.g., duplicate entry)
-      e.printStackTrace();
-      return null;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }}
-  public boolean browsePost(String postid) {
-    try{
-      return postRepository.browsePost(postid);
-    }
-    catch(DataIntegrityViolationException e){
-      e.printStackTrace();
-      return false;
-    }
-    catch (Exception e){
-      e.printStackTrace();
-      return false;
-    }
-
-  }
-
-  @Override
-  public List<Post> showBookmarkPosts(String userid) {
-    try{
-      return postRepository.showPostbookmark(userid);
-    }
-    catch(DataIntegrityViolationException e){
-      e.printStackTrace();
-      return null;
-    }
-    catch (Exception e){
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  @Override
-  public boolean createComment(String userId, String postId, String content) {
-    try {
-      Comment comment = new Comment();
-      String commentid = UUID.randomUUID().toString();
-      comment.setId(commentid);
-      List<Comment> checkComment = commentRepository.findCommentsByUserIdAndPostId(
-              userRepository.findUserById(userId), postRepository.findPostById(postId));
-      if (!checkComment.isEmpty()){
-        int i = 0;
-        while (checkComment.get(i).getId().equals(commentid)) {
-          commentid = UUID.randomUUID().toString();
-          comment.setId(commentid);
-          i++;
-        }
+    @Override
+    public List<Post> findPostsByCategory(int categoryid){
+      try{
+        return postRepository.findPostsByCategory(categoryRepository.findCategoryById(categoryid));
+      }
+      catch(DataIntegrityViolationException e){
+        e.printStackTrace();
+        return null;
+      }
+      catch (Exception e){
+        e.printStackTrace();
+        return null;
       }
 
-      comment.setContent(content);
-      comment.setCreateTime(new Date());
-      comment.setActive(true);
-      comment.setUserId(userRepository.findUserById(userId));
-      comment.setPostId(postRepository.findPostById(postId));
-      commentRepository.save(comment);
-      return true;
-    } catch (DataIntegrityViolationException e) {
-      e.printStackTrace();
-      return false;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
     }
-  }
-  @Override
-  public Integer countComment(String postid) {
-    try {
-      return commentRepository.countComment(postid);
-    } catch (DataIntegrityViolationException e) {
-      e.printStackTrace();
-      return null;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
+    @Override
+    public List<Post> findPostsByUser(String userid){
+      try{
+        return postRepository.findPostsByUser(userRepository.findUserById(userid));
+      }
+      catch(DataIntegrityViolationException e){
+        e.printStackTrace();
+        return null;
+      }
+      catch (Exception e){
+        e.printStackTrace();
+        return null;
+      }
 
-  @Override
-  public boolean updateComment(String content, String commentid) {
-    try {
-        return commentRepository.updateComment(content, commentid) == 1;
-    } catch (DataIntegrityViolationException e) {
-      // Handle specific database constraint violation (e.g., duplicate entry)
-      e.printStackTrace();
-      return false;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return false;
     }
-  }
-
-  @Override
-  public Comment findCommentById(String commentid) {
-    try {
-      return commentRepository.findCommentById(commentid);
-    } catch (DataIntegrityViolationException e) {
-      // Handle specific database constraint violation (e.g., duplicate entry)
-      e.printStackTrace();
-      return null;
-    } catch (Exception e) {
-      e.printStackTrace();
-      return null;
+    @Override
+    public List<Post> findPostsByContent(String content){
+      return postRepository.findPostsByContent(content);
     }
-  }
 
-  @Override
-  public boolean deleteComment(String commentid) {
+    @Override
+    public Post findPostById(String id) {
+      try {
+        return postRepository.findPostById(id);
+      } catch (DataIntegrityViolationException e) {
+        // Handle specific database constraint violation (e.g., duplicate entry)
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+         e.printStackTrace();
+        return null;
+      } }
+    @Override
+    public List<Post> searchPostsByTitle(String keyword) {
+      try{
+        return postRepository.searchPostsByTitle(keyword);
+      }
+      catch(DataIntegrityViolationException e){
+        e.printStackTrace();
+        return null;
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+    @Override
+    public List<Comment> getCommentsByPost(String postid) {
+      try {
+          return commentRepository.findCommentsByPostIdAndIsActiveIsTrue(postRepository.findPostById(postid));
+      } catch (DataIntegrityViolationException e) {
+        // Handle specific database constraint violation (e.g., duplicate entry)
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }}
+    public boolean browsePost(String postid) {
+      try{
+        return postRepository.browsePost(postid);
+      }
+      catch(DataIntegrityViolationException e){
+        e.printStackTrace();
+        return false;
+      }
+      catch (Exception e){
+        e.printStackTrace();
+        return false;
+      }
+
+    }
+
+    @Override
+    public List<Post> showBookmarkPosts(String userid) {
+      try{
+        return postRepository.showPostbookmark(userid);
+      }
+      catch(DataIntegrityViolationException e){
+        e.printStackTrace();
+        return null;
+      }
+      catch (Exception e){
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    @Override
+    public boolean createComment(String userId, String postId, String content) {
+      try {
+        Comment comment = new Comment();
+        String commentid = UUID.randomUUID().toString();
+        comment.setId(commentid);
+        List<Comment> checkComment = commentRepository.findCommentsByUserIdAndPostId(
+                userRepository.findUserById(userId), postRepository.findPostById(postId));
+        if (!checkComment.isEmpty()){
+          int i = 0;
+          while (checkComment.get(i).getId().equals(commentid)) {
+            commentid = UUID.randomUUID().toString();
+            comment.setId(commentid);
+            i++;
+          }
+        }
+
+        comment.setContent(content);
+        comment.setCreateTime(new Date());
+        comment.setActive(true);
+        comment.setUserId(userRepository.findUserById(userId));
+        comment.setPostId(postRepository.findPostById(postId));
+        commentRepository.save(comment);
+        return true;
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return false;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+      }
+    }
+    @Override
+    public Integer countComment(String postid) {
+      try {
+        return commentRepository.countComment(postid);
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    @Override
+    public boolean updateComment(String content, String commentid) {
+      try {
+          return commentRepository.updateComment(content, commentid) == 1;
+      } catch (DataIntegrityViolationException e) {
+        // Handle specific database constraint violation (e.g., duplicate entry)
+        e.printStackTrace();
+        return false;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+      }
+    }
+
+    @Override
+    public Comment findCommentById(String commentid) {
+      try {
+        return commentRepository.findCommentById(commentid);
+      } catch (DataIntegrityViolationException e) {
+        // Handle specific database constraint violation (e.g., duplicate entry)
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    @Override
+    public boolean deleteComment(String commentid) {
     try {
       commentRepository.deleteCommentByCommentId(commentid);
       reactRepository.deleteReactById(commentid);
@@ -244,51 +244,6 @@ import com.example.demoapi.Entity.Post.Post;
       return false;
     }
   }
-
-//    @Override
-//    public boolean deleteReactById(String id) {
-//      try {
-//        reactRepository.deleteReactById(id);
-//        return true;
-//      } catch (DataIntegrityViolationException e) {
-//        // Handle specific database constraint violation (e.g., duplicate entry)
-//        e.printStackTrace();
-//        return false;
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//        return false;
-//      }
-//    }
-//
-//    @Override
-//    public boolean deleteReportById(String id) {
-//      try {
-//        reportRepository.deleteReportById(id);
-//        return true;
-//      } catch (DataIntegrityViolationException e) {
-//        // Handle specific database constraint violation (e.g., duplicate entry)
-//        e.printStackTrace();
-//        return false;
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//        return false;
-//      }
-//    }
-//
-//    @Override
-//    public boolean deleteBookmarkByPostId(String postid) {
-//      try {
-//        bookmarkRepository.deleteBookmarkByPostId(postid);
-//        return true;
-//      } catch (DataIntegrityViolationException e) {
-//        // Handle specific database constraint violation (e.g., duplicate entry)
-//        e.printStackTrace();
-//        return false;
-//      } catch (Exception e) {
-//        e.printStackTrace();
-//        return false;
-//      }
-//    }
 
     @Override
     public boolean reportAPostOrComment(String userId, String postId, String commentId, String msg) {

@@ -2,10 +2,11 @@ package com.example.demoapi.Service.User;
 
 import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-public interface UserService {
+public interface UserService extends UserDetailsService{
     User SearchUserById(String id);
     User SearchUserByUserName(String username);
     List<User> findAll();
