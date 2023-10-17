@@ -6,9 +6,12 @@ import com.example.demoapi.Entity.User.User_Role;
 import com.example.demoapi.Repository.Role.RoleRepository;
 import com.example.demoapi.Repository.User.UserRepository;
 import com.example.demoapi.Repository.User_Role.User_RoleRepository;
+import com.example.demoapi.Security.CustomUserDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +35,16 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUserName(username);
+        if (user == null) {
+            throw new UsernameNotFoundException(username);
+        }
+        return new CustomUserDetail(user);
+    }
 
     @Override
     public List<User> findAll() {
@@ -69,8 +82,8 @@ public class UserServiceImpl implements UserService{
                 user.setId(userid);
             }
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-            user.setBanned(false);
-            user.setStatus(true);
+            user.setBan(false);
+            user.setActive(true);
             userRepository.save(user);
             saveUser_Role(user);
             return true;
@@ -92,7 +105,7 @@ public class UserServiceImpl implements UserService{
             user_role.setRoleId(role);
             Date currentDateTime = new Date();
             user_role.setDateStart(currentDateTime);
-            user_role.setStatus(true);
+            user_role.setActive(true);
             user_roleRepository.save(user_role);
             return true;
         } catch (DataIntegrityViolationException e) {
@@ -121,7 +134,7 @@ public class UserServiceImpl implements UserService{
     public boolean updateUserInfo(User user, String id) {
         try {
             return userRepository.updateUserById(bCryptPasswordEncoder.encode(user.getPassword()), user.getFullName(),
-                    user.getEmail(), user.getDob(), user.isGender(), user.getImg(), id) == 1;
+                    user.getEmail(), user.getDob(), user.isGender(), user.getAvt(), id) == 1;
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             return false;
@@ -210,7 +223,7 @@ public class UserServiceImpl implements UserService{
             user_role.setUserId(user);
             user_role.setRoleId(roleRepository.findRoleByNameAndType(role, type));
             user_role.setDateStart(curDate);
-            user_role.setStatus(true);
+            user_role.setActive(true);
             user_roleRepository.save(user_role);
             return true;
         } catch (DataIntegrityViolationException e) {

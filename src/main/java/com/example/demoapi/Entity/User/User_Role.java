@@ -14,11 +14,11 @@ public class User_Role {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "userid", nullable = false)
     private User userId;
 
     @ManyToOne
-    @JoinColumn(name = "roleid")
+    @JoinColumn(name = "roleid", nullable = false)
     private Role roleId;
 
     @Column(name = "datestart", nullable = false)
@@ -27,7 +27,7 @@ public class User_Role {
     @Column(name = "dateend")
     private Date dateEnd;
 
-    @Column(name = "status")
-    private boolean status;
+    @Column(name = "isactive", nullable = false)
+    private boolean isActive;
 
 }

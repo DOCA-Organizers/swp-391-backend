@@ -41,6 +41,14 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("React failed!");
     }
 
+    @GetMapping("/react/count/{id}")
+    public ResponseEntity<?> countReact(@PathVariable("id") String id) {
+        if (postService.countReact(id) != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.countReact(id));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
+    }
+
     @PostMapping("/report/{userid}/{id}")
     public ResponseEntity<?> reportAPostOrComment(@PathVariable("userid") String userid,
             @PathVariable("id") String id, @RequestBody String msg) {
@@ -91,7 +99,7 @@ public class PostResource {
     }
 
     @GetMapping("/comment/count/{postid}")
-    public ResponseEntity<?> countReact(@PathVariable("postid") String postid) {
+    public ResponseEntity<?> countComment(@PathVariable("postid") String postid) {
         if (postService.countComment(postid) != null) {
             return ResponseEntity.status(HttpStatus.OK).body(postService.countComment(postid));
         }
@@ -109,6 +117,14 @@ public class PostResource {
     @DeleteMapping("/comment/delete/{commentid}")
     public ResponseEntity<?> deleteComment(@PathVariable("commentid") String commentid) {
         if (postService.deleteComment(commentid)) {
+            return ResponseEntity.status(HttpStatus.OK).body(true);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Comment failed !");
+    }
+
+    @DeleteMapping("/post/delete/{postid}")
+    public ResponseEntity<?> deletePostByPostId(@PathVariable("postid") String postid) {
+        if (postService.deletePostByPostID(postid)) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Comment failed !");

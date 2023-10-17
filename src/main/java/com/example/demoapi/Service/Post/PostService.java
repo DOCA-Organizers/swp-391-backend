@@ -28,9 +28,11 @@ public interface PostService {
     Integer countPostByReport();
     List<ReportDTO> showListPostWithNumberOfReport();
     List<Post> searchPostsByTitle(String keyword);
-
     boolean browsePost(String postid);
-
     List<Post> showBookmarkPosts(String userid);
+//    boolean deleteReactById(String id);
+//    boolean deleteReportById(String id);
+//    boolean deleteBookmarkByPostId(String postid);
+    boolean deletePostByPostID(String postId);
 
 }

@@ -17,13 +17,19 @@ public interface MyBookmarkRepository extends JpaRepository<Bookmark,Integer> {
     Bookmark findBookmarkByUseridAndPostid(String userid, String postid);
 
     @Query(value = "update [dbo].[tblBookmark] \n" +
-            "set [status] = \n" +
+            "set [isactive] = \n" +
             "case \n" +
-            "when [status] = 1 then 0\n" +
-            "when [status] = 0 then 1\n" +
+            "when [isactive] = 1 then 0\n" +
+            "when [isactive] = 0 then 1\n" +
             "end\n" +
             "where [id] = ?1", nativeQuery = true)
     @Modifying
     @Transactional
     Integer changeBookmarkStatus(Integer id);
+    @Query(value = "UPDATE [dbo].[tblBookmark]\n" +
+                    "SET [isactive] = 0\n" +
+                    "where [postid] = ?1", nativeQuery = true)
+    @Modifying
+    @Transactional
+    Integer deleteBookmarkByPostId(String id);
 }

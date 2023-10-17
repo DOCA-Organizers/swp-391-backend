@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigInteger;
+import java.util.Date;
 
 @Entity
 @Table(name = "tblReact")
@@ -15,8 +16,11 @@ public class React {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @Column(name = "isactive", nullable = false)
+    private boolean isActive;
+
+    @Column(name = "createtime", nullable = false)
+    private Date createTime;
 
     @JsonIgnore
     @ManyToOne
