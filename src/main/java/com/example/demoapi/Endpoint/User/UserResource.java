@@ -21,6 +21,9 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private AuthController authController;
+
     @GetMapping
     public ResponseEntity<?> getAllUser() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
@@ -102,10 +105,12 @@ public class UserResource {
         String password = loginDTO.getPassword();
        User user = userService.login(username,password);
        Role role = this.getRoleByUserId(user.getId());
+       String Token = authController.loginToken(loginDTO);
        if(user!=null){
            userDTO result = new userDTO();
            result.setUser(user);
            result.setRole(role);
+           result.setToken(Token);
             return ResponseEntity.status(HttpStatus.OK).body(result);
        }
        else{

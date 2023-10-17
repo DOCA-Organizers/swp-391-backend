@@ -8,4 +8,5 @@ import lombok.Data;
 public class userDTO {
     private User user;
     private Role role;
+    private String token;
 }

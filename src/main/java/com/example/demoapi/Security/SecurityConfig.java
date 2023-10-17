@@ -21,8 +21,10 @@ public class SecurityConfig {
         http.csrf(csrf->csrf.disable())
                 .cors(cors->cors.disable())
                 .authorizeHttpRequests(auth->auth.requestMatchers("/home/**").authenticated()
-                        .requestMatchers("/auth/login").permitAll().anyRequest()
-                        .authenticated())
+                        .requestMatchers("/*/login","/*/register").permitAll().anyRequest()
+                      .authenticated()
+  //                      .permitAll()
+                )
                 .exceptionHandling(ex->ex.authenticationEntryPoint(point))
                 .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(filter,UsernamePasswordAuthenticationFilter.class);

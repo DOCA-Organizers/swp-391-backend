@@ -3,6 +3,8 @@ package com.example.demoapi.Endpoint.User;
 
 import com.example.demoapi.DTO.JWTDTO.JwtRequest;
 import com.example.demoapi.DTO.JWTDTO.JwtResponse;
+import com.example.demoapi.DTO.User.loginDTO;
+import com.example.demoapi.DTO.User.userDTO;
 import com.example.demoapi.Security.JWTHelper;
 import com.example.demoapi.Service.User.UserService;
 import org.slf4j.Logger;
@@ -36,20 +38,15 @@ public class AuthController {
 
     private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-
-    @PostMapping("/login")
-    public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request) {
+    public String loginToken(loginDTO request) {
         try {
-            UserDetails userDetails = userService.loadUserByUsername(request.getUserName());
+            UserDetails userDetails = userService.loadUserByUsername(request.getUsername());
             String token = this.helper.generateToken(userDetails);
-            JwtResponse response = JwtResponse.builder()
-                    .jwtToken(token)
-                    .username(userDetails.getUsername()).build();
-            return new ResponseEntity<>(response, HttpStatus.OK);
+            return token;
         }
         catch (AuthenticationException e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return null;
         }
     }
 
