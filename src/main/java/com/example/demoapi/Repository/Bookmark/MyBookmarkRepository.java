@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface MyBookmarkRepository extends JpaRepository<Bookmark,Integer> {
-    @Query(value = "select * from tblBookmark where userid = ?1 and postid = ?2",nativeQuery = true)
+    @Query(value = "select * from tblBookmark where userid = ?1 and postid = ?2 and isactive=1",nativeQuery = true)
     Bookmark findBookmarkByUseridAndPostid(String userid, String postid);
 
     @Query(value = "update [dbo].[tblBookmark] \n" +

@@ -10,8 +10,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 public interface MyUserRepository extends JpaRepository<User, String>{
+    @Query(value = "select * from [dbo].[tblUser]",nativeQuery = true)
+    List<User> getAllUser();
     User findUserById(String id);
     User findUserByUserName(String username);
     User findUserByEmail(String email);

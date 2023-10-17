@@ -16,27 +16,27 @@ public class Post {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private String id;
 
-    @Column(name= "content", nullable = false)
+    @Column(name= "content",nullable = false)
     private String  content;
 
-    @Column(name="title", nullable = false)
+    @Column(name="title",nullable = false)
     private String title;
 
-    @Column(name="isactive", nullable = false)
+    @Column(name="isactive",nullable = false)
     private boolean isActive;
 
-    @Column(name="createtime", nullable = false)
+    @Column(name="createtime",nullable = false)
     private Date createTime;
 
-    @Column(name="issold", nullable = false)
+    @Column(name="issold",nullable = false)
     private boolean isSold;
 
-    @Column(name="isexchange", nullable = false)
+    @Column(name="isexchange",nullable = false)
     private boolean isExchange;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name="categoryid", nullable = false)
+    @JoinColumn(name="categoryid",nullable = false)
     private Category category;
 
     @JsonIgnore

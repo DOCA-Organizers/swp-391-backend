@@ -35,4 +35,6 @@ public interface PostService {
 //    boolean deleteBookmarkByPostId(String postid);
     boolean deletePostByPostID(String postId);
 
+    boolean changeExchange(String postid);
+    boolean createPost(Post post);
 }

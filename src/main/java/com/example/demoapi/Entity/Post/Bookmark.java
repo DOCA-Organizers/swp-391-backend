@@ -27,10 +27,10 @@ public class Bookmark {
     @JoinColumn(name = "postid")
     private Post postId;
 
-    @Column(name = "createtime", nullable = false)
+    @Column(name="createtime")
     private Date createTime;
 
-    @Column(name = "isactive", nullable = false)
-    private boolean isActive;
+    @Column(name="isactive")
+    private boolean isactive;
 
 }

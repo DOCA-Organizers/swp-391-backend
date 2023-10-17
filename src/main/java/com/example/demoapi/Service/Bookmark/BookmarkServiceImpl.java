@@ -45,7 +45,7 @@ public class BookmarkServiceImpl implements BookmarkService{
             bm.setUserId(userRepository.findUserById(userid));
             bm.setPostId(postRepository.findPostById(postid));
             bm.setCreateTime(new Date());
-            bm.setActive(true);
+            bm.setIsactive(true);
             Bookmark check = bookmarkRepository.findBookmarkByUseridAndPostid(userid,postid);
             if (check!=null){
                 bookmarkRepository.changeBookmarkStatus(check.getId());

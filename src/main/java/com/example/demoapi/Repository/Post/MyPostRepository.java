@@ -14,21 +14,20 @@ import java.util.List;
 @Repository
 public interface MyPostRepository extends JpaRepository<Post,String> {
     List<Post> findPostsByCategory(Category category);
-    List<Post> findPostByUser(User user);
     Post findPostById(String id);
     @Query(value = "select a.* from [dbo].[tblPost] a where a.[content] like %?1%", nativeQuery = true)
     List<Post> findPostsByContent(String content);
     List<Post> findPostsByUser(User user);
     List<Post> searchPostById(String id);
-    @Query(value = "select * from tblPost where content like %?%1 and isactive = 'true' order by createtime desc",nativeQuery = true)
+    @Query(value = "select * from tblPost where content like %?%1 and isactive='true' order by createtime desc",nativeQuery = true)
     List<Post> searchPostsByTitle(String keyword);
 
-    @Query(value = "update tblPost set status='0' where id=?1",nativeQuery = true)
+    @Query(value = "update tblPost set isactive='0' where id=?1",nativeQuery = true)
     @Modifying
     @Transactional
     boolean browsePost(String postid);
 
-    @Query(value = "select * from tblPost where id in (select postid from tblBookmark where userid= ?1) order by createTime desc",nativeQuery = true)
+    @Query(value = "select * from tblPost where id in (select postid from tblBookmark where userid= ?1) order by createtime desc",nativeQuery = true)
     List<Post> showPostbookmark(String userid);
     @Query(value = "UPDATE [dbo].[tblPost] \n" +
                     "SET [isactive] = 0\n" +
@@ -36,5 +35,16 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
     @Transactional
     @Modifying
     Integer deletePostByPostId(String id);
+
+    @Query(value = "update tblPost \n" +
+            "set [isexchange] = \n" +
+            "case \n" +
+            "when [isexchange] = 1 then 0\n" +
+            "when [isexchange] = 0 then 1\n" +
+            "end\n" +
+            "where [id] = ?1", nativeQuery = true)
+    @Modifying
+    @Transactional
+    Integer changePostExchange(String postid);
 
 }

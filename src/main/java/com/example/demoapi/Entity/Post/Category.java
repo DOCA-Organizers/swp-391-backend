@@ -14,7 +14,7 @@ public class Category {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private Integer id;
 
-    @Column(name="name", nullable = false)
+    @Column(name="name",nullable = false)
     private String name;
 
     @JsonIgnore

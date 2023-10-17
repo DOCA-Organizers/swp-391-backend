@@ -9,6 +9,6 @@ public interface MyRoleRepository extends JpaRepository<Role, Integer> {
     Role findRoleById(Integer id);
     Role findRoleByNameAndType(String name, String type);
     @Query(value = "select * from [dbo].[tblRole] where [id] = " +
-            "(select [roleid] from [dbo].[tblUser_Role] where [userid] = ?1)", nativeQuery = true)
+            "(select [roleid] from [dbo].[tblUser_Role] where [userid] = ?1 and [isactive] = 'true')", nativeQuery = true)
     Role GetRoleByUserId(String id);
 }

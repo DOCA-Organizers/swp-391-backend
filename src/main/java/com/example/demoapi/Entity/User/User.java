@@ -38,8 +38,8 @@ public class User {
     @Column(name = "gender")
     private boolean gender;
 
-    @Column(name = "isactive", nullable = false)
-    private boolean isActive;
+    @Column(name = "isactive")
+    private boolean IsActive;
 
     @Column(name = "isban")
     private boolean isBan;
@@ -67,6 +67,7 @@ public class User {
     @OneToMany(mappedBy = "userId")
     private Collection<Report> reports;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Bookmark> bookmarks;
 }

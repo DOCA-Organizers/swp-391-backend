@@ -25,7 +25,7 @@ public class Comment {
     @Column(name = "isactive", nullable = false)
     private boolean isActive;
 
-    @Column(name = "isprivate", nullable = false)
+    @Column(name="isprivate",nullable = false)
     private boolean isPrivate;
 
     @JsonIgnore

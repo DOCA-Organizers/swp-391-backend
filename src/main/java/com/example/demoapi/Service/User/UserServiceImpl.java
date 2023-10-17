@@ -83,7 +83,11 @@ public class UserServiceImpl implements UserService{
             }
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setBan(false);
+<<<<<<< HEAD
             user.setActive(true);
+=======
+            user.setIsActive(true);
+>>>>>>> KhanhBa
             userRepository.save(user);
             saveUser_Role(user);
             return true;
@@ -240,6 +244,20 @@ public class UserServiceImpl implements UserService{
         try {
             return roleRepository.GetRoleByUserId(id);
         } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<User> getAllUser() {
+        try {
+            return userRepository.getAllUser();
+        }
+        catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             return null;
         } catch (Exception e) {
