@@ -83,11 +83,7 @@ public class UserServiceImpl implements UserService{
             }
             user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
             user.setBan(false);
-<<<<<<< HEAD
-            user.setActive(true);
-=======
             user.setIsActive(true);
->>>>>>> KhanhBa
             userRepository.save(user);
             saveUser_Role(user);
             return true;
