@@ -236,6 +236,20 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<User> getAllUser() {
+        try {
+            return userRepository.getAllUser();
+        }
+        catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public boolean changeBanStatusUserByUserName(String username) {
         try {
             return userRepository.changeBanStatusUserByUserName(username) == 1;

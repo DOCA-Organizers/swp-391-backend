@@ -19,6 +19,7 @@ public interface UserService {
     User login(String username, String password);
     boolean updateUserRole(String userId, String role, String type);
     Role getRoleByUserId(String id);
+    List<User> getAllUser();
 
     boolean changeBanStatusUserByUserName(String username);
 

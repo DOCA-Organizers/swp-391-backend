@@ -67,6 +67,7 @@ public class User {
     @OneToMany(mappedBy = "userId")
     private Collection<Report> reports;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Bookmark> bookmarks;
 }

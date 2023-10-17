@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
@@ -109,6 +111,14 @@ public class UserResource {
        else{
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user");
        }
+    }
+    @GetMapping("/user/getall")
+    public ResponseEntity<?> getallUser() {
+        List<User> list = userService.getAllUser();
+        if(list!=null) {
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("list null");
     }
 
 }
