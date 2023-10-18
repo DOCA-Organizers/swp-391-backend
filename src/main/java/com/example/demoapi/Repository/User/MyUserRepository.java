@@ -16,6 +16,8 @@ public interface MyUserRepository extends JpaRepository<User, String>{
     @Query(value = "select * from [dbo].[tblUser]",nativeQuery = true)
     List<User> getAllUser();
     User findUserById(String id);
+    @Query(value = "select * from [dbo].[tblUser] where username like %?1% isactive=1",nativeQuery = true)
+    List<User> searchUserByUserName(String username);
     User findUserByUserName(String username);
     User findUserByEmail(String email);
     @Query(value = "update [dbo].[tblUser] set [isactive] = \n" +
@@ -42,5 +44,6 @@ public interface MyUserRepository extends JpaRepository<User, String>{
     @Transactional
     Integer updateUserById(@Param("password") String password, @Param("fullName") String fullName, @Param("email") String email,
                            @Param("dob") Date dob, @Param("gender") boolean gender, @Param("avt") String avt, @Param("id") String id);
-
+    @Query(value = "select top 1 datestart from tblUser_Role where userid = ? order by datestart asc",nativeQuery = true)
+    Date getDateStart(String Userid);
 }

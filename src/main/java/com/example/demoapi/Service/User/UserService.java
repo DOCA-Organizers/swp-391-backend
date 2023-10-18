@@ -1,14 +1,19 @@
 package com.example.demoapi.Service.User;
 
+import com.example.demoapi.DTO.User.loginDTO;
+import com.example.demoapi.DTO.User.profileDTO;
+import com.example.demoapi.DTO.User.userDTO;
 import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 public interface UserService extends UserDetailsService{
     User SearchUserById(String id);
-    User SearchUserByUserName(String username);
+    List<User> searchUserByUserName(String username);
     List<User> findAll();
     boolean save(User user);
     boolean saveUser_Role(User user);
@@ -21,7 +26,9 @@ public interface UserService extends UserDetailsService{
     boolean updateUserRole(String userId, String role, String type);
     Role getRoleByUserId(String id);
     List<User> getAllUser();
-
+    User getUserById(String userid);
     boolean changeBanStatusUserByUserName(String username);
-
+    Date getDateStartByUserId(String userId);
+    profileDTO getUserProfileByUserId(String userid);
+    userDTO loginByUsernameandPassword(loginDTO loginDTO);
 }

@@ -1,6 +1,7 @@
 package com.example.demoapi.Endpoint.User;
 
 import com.example.demoapi.DTO.User.loginDTO;
+import com.example.demoapi.DTO.User.profileDTO;
 import com.example.demoapi.DTO.User.userDTO;
 import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
@@ -21,17 +22,14 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private AuthController authController;
-
     @GetMapping
     public ResponseEntity<?> getAllUser() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<?> getUser(@PathVariable("username") String username) {
-        User user = userService.SearchUserByUserName(username);
+    @GetMapping("/{userid}")
+    public ResponseEntity<?> getUser(@PathVariable("userid") String userid) {
+        User user = userService.getUserById(userid);
         if(user != null) {
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }
@@ -71,6 +69,16 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Update User failed !");
     }
 
+
+    @GetMapping("/profile/user/{id}")
+    public ResponseEntity<?> getProfileUser(@PathVariable String id){
+        if(userService.getUserProfileByUserId(id)!=null) {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.getUserProfileByUserId(id));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find this user");
+    }
+
+
     @PutMapping("/role/{role}/{type}/{id}")
     public ResponseEntity<?> updateUserRole(@PathVariable("role") String role, @PathVariable("type") String type, @PathVariable("id") String id){
         if(userService.SearchUserById(id) == null) {
@@ -101,16 +109,8 @@ public class UserResource {
 
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody loginDTO loginDTO){
-        String username = loginDTO.getUsername();
-        String password = loginDTO.getPassword();
-       User user = userService.login(username,password);
-       Role role = this.getRoleByUserId(user.getId());
-       String Token = authController.loginToken(loginDTO);
-       if(user!=null){
-           userDTO result = new userDTO();
-           result.setUser(user);
-           result.setRole(role);
-           result.setToken(Token);
+        userDTO result = userService.loginByUsernameandPassword(loginDTO);
+       if(result!=null){
             return ResponseEntity.status(HttpStatus.OK).body(result);
        }
        else{

@@ -1,5 +1,8 @@
 package com.example.demoapi.Service.User;
 
+import com.example.demoapi.DTO.User.loginDTO;
+import com.example.demoapi.DTO.User.profileDTO;
+import com.example.demoapi.DTO.User.userDTO;
 import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
 import com.example.demoapi.Entity.User.User_Role;
@@ -7,13 +10,17 @@ import com.example.demoapi.Repository.Role.RoleRepository;
 import com.example.demoapi.Repository.User.UserRepository;
 import com.example.demoapi.Repository.User_Role.User_RoleRepository;
 import com.example.demoapi.Security.CustomUserDetail;
+import com.example.demoapi.Security.JWTHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Date;
 import java.util.List;
@@ -22,7 +29,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
@@ -38,15 +45,6 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findUserByUserName(username);
-        if (user == null) {
-            throw new UsernameNotFoundException(username);
-        }
-        return new CustomUserDetail(user);
-    }
-
-    @Override
     public List<User> findAll() {
         try {
             return userRepository.findAll();
@@ -60,7 +58,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User SearchUserById(String id) {
+    public User getUserById(String id) {
         try {
             return userRepository.findUserById(id);
         } catch (DataIntegrityViolationException e) {
@@ -98,7 +96,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public boolean saveUser_Role(User user) {
-        try{
+        try {
             User_Role user_role = new User_Role();
             user_role.setUserId(user);
             Role role = roleRepository.findRoleByNameAndType("User", "All");
@@ -118,9 +116,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User SearchUserByUserName(String username) {
+    public User SearchUserById(String id) {
+        return null;
+    }
+
+    @Override
+    public List<User> searchUserByUserName(String username) {
         try {
-            return userRepository.findUserByUserName(username);
+            return userRepository.searchUserByUserName(username);
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             return null;
@@ -182,6 +185,7 @@ public class UserServiceImpl implements UserService{
             return false;
         }
     }
+
     @Override
     public boolean isEmailDupplicated(String email) {
         try {
@@ -196,12 +200,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User login(String username,String password){
+    public User login(String username, String password) {
         try {
-            if (bCryptPasswordEncoder.matches(password,userRepository.findUserByUserName(username).getPassword())){
+            if (bCryptPasswordEncoder.matches(password, userRepository.findUserByUserName(username).getPassword())) {
                 return userRepository.findUserByUserName(username);
-            }
-            else {
+            } else {
                 return null;
             }
         } catch (DataIntegrityViolationException e) {
@@ -252,8 +255,7 @@ public class UserServiceImpl implements UserService{
     public List<User> getAllUser() {
         try {
             return userRepository.getAllUser();
-        }
-        catch (DataIntegrityViolationException e) {
+        } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             return null;
         } catch (Exception e) {
@@ -273,5 +275,91 @@ public class UserServiceImpl implements UserService{
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public Date getDateStartByUserId(String userId) {
+        try {
+            return userRepository.getDateStart(userId);
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public profileDTO getUserProfileByUserId(String userid) {
+        try {
+            profileDTO profile = new profileDTO();
+            profile.setUser(userRepository.findUserById(userid));
+            profile.setRole(roleRepository.GetRoleByUserId(userid));
+            profile.setDatestart(userRepository.getDateStart(userid));
+            return profile;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public userDTO loginByUsernameandPassword(loginDTO loginDTO) {
+        try {
+            String username = loginDTO.getUsername();
+            String password = loginDTO.getPassword();
+            User user = this.login(username, password);
+            Role role = this.getRoleByUserId(user.getId());
+            String Token = this.loginToken(loginDTO);
+            if (user != null) {
+                userDTO result = new userDTO();
+                result.setUser(user);
+                result.setRole(role);
+                result.setToken(Token);
+                return result;
+            }
+            else return null;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        try {
+            return new CustomUserDetail(userRepository.findUserByUserName(username));
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Autowired
+    private JWTHelper helper;
+    public String loginToken(loginDTO request) {
+        try {
+            UserDetails userDetails = this.loadUserByUsername(request.getUsername());
+            String token = this.helper.generateToken(userDetails);
+            return token;
+        }
+        catch (AuthenticationException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public String exceptionHandler() {
+        return "Credentials Invalid !!";
     }
 }

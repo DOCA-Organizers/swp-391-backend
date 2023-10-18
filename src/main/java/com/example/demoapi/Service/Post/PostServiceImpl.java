@@ -117,7 +117,6 @@ import com.example.demoapi.Entity.Post.Post;
     try {
       return postRepository.findPostById(id);
     } catch (DataIntegrityViolationException e) {
-      // Handle specific database constraint violation (e.g., duplicate entry)
       e.printStackTrace();
       return null;
     } catch (Exception e) {
@@ -143,7 +142,6 @@ import com.example.demoapi.Entity.Post.Post;
     try {
         return commentRepository.findCommentsByPostIdAndIsActiveIsTrue(postRepository.findPostById(postid));
     } catch (DataIntegrityViolationException e) {
-      // Handle specific database constraint violation (e.g., duplicate entry)
       e.printStackTrace();
       return null;
     } catch (Exception e) {
@@ -236,7 +234,6 @@ import com.example.demoapi.Entity.Post.Post;
       commentRepository.save(comment);
       return true;
     } catch (DataIntegrityViolationException e) {
-      // Handle specific database constraint violation (e.g., duplicate entry)
       e.printStackTrace();
       return false;
     } catch (Exception e) {
@@ -342,25 +339,53 @@ import com.example.demoapi.Entity.Post.Post;
 
     @Override
     public Integer countComment(String postid) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'countComment'");
+      try {
+        return commentRepository.countComment(postid);
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
     }
 
     @Override
     public boolean updateComment(String content, String commentid) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'updateComment'");
+      try {
+        return commentRepository.updateComment(content, commentid) == 1;
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return false;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+      }
     }
 
     @Override
     public Comment findCommentById(String commentid) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'findCommentById'");
+      try {
+        return commentRepository.findCommentById(commentid);
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
     }
 
     @Override
     public boolean deleteComment(String commentid) {
-      // TODO Auto-generated method stub
-      throw new UnsupportedOperationException("Unimplemented method 'deleteComment'");
+      try {
+        return commentRepository.deleteCommentByCommentId(commentid) == 1;
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return false;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+      }
     }
 }
