@@ -13,7 +13,6 @@ public class createDTO {
     private String userid;
     private Integer categoryid;
     private String  content;
-    private String title;
     private boolean isexchange;
     private List<PostImg> list;
 }

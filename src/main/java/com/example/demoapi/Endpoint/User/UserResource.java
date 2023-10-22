@@ -35,16 +35,6 @@ public class UserResource {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user");
     }
-
-
-    public Role getRoleByUserId(@PathVariable("id") String id) {
-        Role role = userService.getRoleByUserId(id);
-        if(role != null) {
-            return role;
-        }
-        return null;
-    }
-
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody User user){
         if(userService.isUserNameDupplicated(user.getUserName()) || userService.isEmailDupplicated(user.getEmail())) {

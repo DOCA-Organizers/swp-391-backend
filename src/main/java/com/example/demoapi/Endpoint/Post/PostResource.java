@@ -150,15 +150,6 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("");
     }
-
-    @GetMapping("/search/post/key={keyword}")
-    public ResponseEntity<?> seachpostbyTitle(@PathVariable("keyword") String keyword) {
-        List<Post> list = postService.searchPostsByTitle(keyword);
-        if (list != null)
-            return ResponseEntity.status(HttpStatus.OK).body(list);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Errol");
-    }
-
     @GetMapping("/bookmark/userid={userid}&postid={postid}")
     public ResponseEntity<?> showbookmarkpost(@PathVariable("userid") String userid,
             @PathVariable("postid") String postid) {
@@ -174,12 +165,6 @@ public class PostResource {
         if (list != null)
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Do not have any bookmark");
-    }
-    @PutMapping("/browserpost/postid={postid}")
-    public ResponseEntity<?> browserPost(@PathVariable("postid") String postid){
-        if (postService.browsePost(postid))
-            return ResponseEntity.status(HttpStatus.OK).body(true);
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
     }
 
     @PostMapping("/bookmark")
@@ -204,7 +189,6 @@ public class PostResource {
         post.setActive(true);
         post.setCreateTime(new Date());
         post.setContent(createDTO.getContent());
-        post.setTitle(createDTO.getTitle());
         post.setExchange(createDTO.isIsexchange());
         if (createDTO.isIsexchange()) {
             post.setSold(true);

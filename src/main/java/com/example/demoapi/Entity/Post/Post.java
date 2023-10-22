@@ -19,9 +19,6 @@ public class Post {
     @Column(name= "content",nullable = false)
     private String  content;
 
-    @Column(name="title",nullable = false)
-    private String title;
-
     @Column(name="isactive",nullable = false)
     private boolean isActive;
 

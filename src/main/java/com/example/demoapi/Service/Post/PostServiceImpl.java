@@ -124,20 +124,6 @@ import com.example.demoapi.Entity.Post.Post;
       return null;
     } }
   @Override
-  public List<Post> searchPostsByTitle(String keyword) {
-    try{
-      return postRepository.searchPostsByTitle(keyword);
-    }
-    catch(DataIntegrityViolationException e){
-      e.printStackTrace();
-      return null;
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-  @Override
   public List<Comment> getCommentsByPost(String postid) {
     try {
         return commentRepository.findCommentsByPostIdAndIsActiveIsTrue(postRepository.findPostById(postid));
@@ -148,20 +134,6 @@ import com.example.demoapi.Entity.Post.Post;
       e.printStackTrace();
       return null;
     }}
-  public boolean browsePost(String postid) {
-    try{
-      return postRepository.browsePost(postid);
-    }
-    catch(DataIntegrityViolationException e){
-      e.printStackTrace();
-      return false;
-    }
-    catch (Exception e){
-      e.printStackTrace();
-      return false;
-    }
-
-  }
 
   @Override
   public List<Post> showBookmarkPosts(String userid) {

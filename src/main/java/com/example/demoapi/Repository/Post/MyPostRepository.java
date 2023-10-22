@@ -19,14 +19,6 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
     List<Post> findPostsByContent(String content);
     List<Post> findPostsByUser(User user);
     List<Post> searchPostById(String id);
-    @Query(value = "select * from tblPost where content like %?%1 and isactive='true' order by createtime desc",nativeQuery = true)
-    List<Post> searchPostsByTitle(String keyword);
-
-    @Query(value = "update tblPost set isactive='0' where id=?1",nativeQuery = true)
-    @Modifying
-    @Transactional
-    boolean browsePost(String postid);
-
     @Query(value = "select * from tblPost where id in (select postid from tblBookmark where userid= ?1) order by createtime desc",nativeQuery = true)
     List<Post> showPostbookmark(String userid);
     @Query(value = "UPDATE [dbo].[tblPost] \n" +
