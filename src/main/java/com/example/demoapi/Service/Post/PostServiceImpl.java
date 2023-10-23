@@ -108,22 +108,6 @@ import com.example.demoapi.Entity.Post.Post;
 
   }
   @Override
-  public List<Post> findPostsByContent(String content){
-    return postRepository.findPostsByContent(content);
-  }
-
-  @Override
-  public Post findPostById(String id) {
-    try {
-      return postRepository.findPostById(id);
-    } catch (DataIntegrityViolationException e) {
-      e.printStackTrace();
-      return null;
-    } catch (Exception e) {
-       e.printStackTrace();
-      return null;
-    } }
-  @Override
   public List<Comment> getCommentsByPost(String postid) {
     try {
         return commentRepository.findCommentsByPostIdAndIsActiveIsTrue(postRepository.findPostById(postid));

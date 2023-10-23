@@ -2,6 +2,10 @@ package com.example.demoapi.Endpoint.Post;
 
 import com.example.demoapi.DTO.Post.createDTO;
 import com.example.demoapi.DTO.Post.markDTO;
+import com.example.demoapi.DTO.User.Pet_BreedDTO;
+import com.example.demoapi.Entity.Pet.Pet;
+import com.example.demoapi.Entity.Pet.Pet_Breed;
+import com.example.demoapi.Entity.Pet.Pet_Item;
 import com.example.demoapi.Entity.Post.*;
 import com.example.demoapi.Entity.User.User;
 import com.example.demoapi.Repository.Category.CategoryRepository;
@@ -10,6 +14,7 @@ import com.example.demoapi.Repository.Bookmark.BookmarkRepository;
 import com.example.demoapi.Repository.Category.CategoryRepository;
 import com.example.demoapi.Repository.Post.PostRepository;
 import com.example.demoapi.Service.Bookmark.BookmarkService;
+import com.example.demoapi.Service.Pet.PetService;
 import com.example.demoapi.Service.Post.PostService;
 import com.example.demoapi.Service.User.UserService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +41,8 @@ public class PostResource {
     private CategoryRepository categoryRepository;
     @Autowired
     private BookmarkService bookmarkService;
-
+    @Autowired
+    private PetService petService;
     @PostMapping("/react/{userid}/{id}")
     public ResponseEntity<?> reactAPostOrComment(@PathVariable("userid") String userid, @PathVariable("id") String id) {
         if (postService.reactAPostOrComment(userid, id, id)) {
@@ -185,12 +191,12 @@ public class PostResource {
         Post post = new Post();
         post.setId(UUID.randomUUID().toString());
         post.setCategory(categoryRepository.findCategoryById(createDTO.getCategoryid()));
-        post.setUser(userService.SearchUserById(createDTO.getUserid()));
+        post.setUser(userService.getUserById(createDTO.getUserid()));
         post.setActive(true);
         post.setCreateTime(new Date());
         post.setContent(createDTO.getContent());
-        post.setExchange(createDTO.isIsexchange());
-        if (createDTO.isIsexchange()) {
+        post.setExchange(createDTO.isExchange());
+        if (createDTO.isExchange()) {
             post.setSold(true);
         }
         else post.setSold(false);
@@ -199,4 +205,37 @@ public class PostResource {
         }
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't create Post");
     }
+    @GetMapping("/pet_breed/postid={postid}")
+    public ResponseEntity<?> getPetBreedByPost(@PathVariable("postid") String postid) {
+        Pet_Breed petBreed = petService.findPet_BreedByPostId(postid);
+        if (petBreed != null)
+            return ResponseEntity.status(HttpStatus.OK).body(petBreed);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet_breed not found!");
+    }
+
+    @GetMapping("/pet_breed/pet_type={pet_type}")
+    public ResponseEntity<?> getBreedNameByPetType(@PathVariable("pet_type") String pet_type) {
+        List<Pet_BreedDTO> list = petService.getBreedNameByPetType(pet_type);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet Type Not Found!");
+    }
+
+    @GetMapping("/pet/postid={postid}")
+    public ResponseEntity<?> getPetByPost(@PathVariable("postid") String postid) {
+        List<Pet> list = petService.findPetByPostId(postid);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet Not Found!");
+    }
+
+    @GetMapping("/pet_item/postid={postid}")
+    public ResponseEntity<?> getPetItemByPost(@PathVariable("postid") String postid) {
+        List<Pet_Item> list = petService.findPet_ItemByPostId(postid);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet Item Not Found!");
+    }
+
 }

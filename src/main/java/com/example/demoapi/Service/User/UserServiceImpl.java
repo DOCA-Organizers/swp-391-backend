@@ -116,11 +116,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User SearchUserById(String id) {
-        return null;
-    }
-
-    @Override
     public List<User> searchUserByUserName(String username) {
         try {
             return userRepository.searchUserByUserName(username);

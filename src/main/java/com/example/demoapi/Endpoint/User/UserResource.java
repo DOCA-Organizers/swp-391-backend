@@ -49,7 +49,7 @@ public class UserResource {
 
     @PutMapping("/user/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String id){
-        if(userService.SearchUserById(id) == null || user == null) {
+        if(userService.getUserById(id) == null || user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         } else {
             if (userService.updateUserInfo(user, id)) {
@@ -71,7 +71,7 @@ public class UserResource {
 
     @PutMapping("/role/{role}/{type}/{id}")
     public ResponseEntity<?> updateUserRole(@PathVariable("role") String role, @PathVariable("type") String type, @PathVariable("id") String id){
-        if(userService.SearchUserById(id) == null) {
+        if(userService.getUserById(id) == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
         } else {
             if (userService.updateUserRole(id, role, type)) {

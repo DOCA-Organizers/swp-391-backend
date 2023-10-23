@@ -9,10 +9,4 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MyCategoryRepository extends JpaRepository<Category,Integer> {
     Category findCategoryById(int id);
-
-    // @Query(value = "",nativeQuery = true)
-    // @Transactional
-    //@Modifying
-
-
 }
