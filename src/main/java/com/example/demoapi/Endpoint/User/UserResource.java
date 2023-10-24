@@ -37,7 +37,7 @@ public class UserResource {
     }
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody User user){
-        if(userService.isUserNameDupplicated(user.getUserName()) || userService.isEmailDupplicated(user.getEmail())) {
+        if(userService.isUserNameDupplicated(user.getUsername()) || userService.isEmailDupplicated(user.getEmail())) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Username or Email is dupplicated.");
         } else {
             if (userService.save(user)) {

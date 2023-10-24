@@ -9,8 +9,8 @@ import com.example.demoapi.Entity.User.User_Role;
 import com.example.demoapi.Repository.Role.RoleRepository;
 import com.example.demoapi.Repository.User.UserRepository;
 import com.example.demoapi.Repository.User_Role.User_RoleRepository;
-import com.example.demoapi.Security.CustomUserDetail;
 import com.example.demoapi.Security.JWTHelper;
+import com.example.demoapi.Security.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -42,6 +42,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private MyUserDetailsService myUserDetailsService;
 
 
     @Override
@@ -309,7 +312,7 @@ public class UserServiceImpl implements UserService {
             String password = loginDTO.getPassword();
             User user = this.login(username, password);
             Role role = this.getRoleByUserId(user.getId());
-            String Token = this.loginToken(loginDTO);
+            String Token = myUserDetailsService.loginToken(loginDTO);
             if (user != null) {
                 userDTO result = new userDTO();
                 result.setUser(user);
@@ -325,36 +328,5 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
             return null;
         }
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        try {
-            return new CustomUserDetail(userRepository.findUserByUserName(username));
-        } catch (DataIntegrityViolationException e) {
-            e.printStackTrace();
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Autowired
-    private JWTHelper helper;
-    public String loginToken(loginDTO request) {
-        try {
-            UserDetails userDetails = this.loadUserByUsername(request.getUsername());
-            String token = this.helper.generateToken(userDetails);
-            return token;
-        }
-        catch (AuthenticationException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    @ExceptionHandler(BadCredentialsException.class)
-    public String exceptionHandler() {
-        return "Credentials Invalid !!";
     }
 }

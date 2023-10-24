@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-public interface UserService extends UserDetailsService{
+public interface UserService {
     List<User> searchUserByUserName(String username);
     List<User> findAll();
     boolean save(User user);
