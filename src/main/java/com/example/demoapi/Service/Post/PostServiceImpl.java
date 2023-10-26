@@ -137,7 +137,7 @@ import com.example.demoapi.Entity.Post.Post;
     @Override
     public boolean changeExchange(String postid) {
       try{
-        return postRepository.changePostExchange(postid)==1;
+        return postRepository.changePostisSold(postid)==1;
       }
       catch(DataIntegrityViolationException e){
         e.printStackTrace();
@@ -162,6 +162,19 @@ import com.example.demoapi.Entity.Post.Post;
       catch (Exception e){
         e.printStackTrace();
         return false;
+      }
+    }
+
+    @Override
+    public List<Post> searchPostsByContent(String key) {
+      try {
+        return postRepository.findPostsByContent(key);
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
       }
     }
 

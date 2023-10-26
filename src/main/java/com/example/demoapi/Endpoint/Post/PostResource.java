@@ -1,8 +1,8 @@
 package com.example.demoapi.Endpoint.Post;
 
+import com.example.demoapi.DTO.Post.Pet_BreedDTO;
 import com.example.demoapi.DTO.Post.createDTO;
 import com.example.demoapi.DTO.Post.markDTO;
-import com.example.demoapi.DTO.User.Pet_BreedDTO;
 import com.example.demoapi.Entity.Pet.Pet;
 import com.example.demoapi.Entity.Pet.Pet_Breed;
 import com.example.demoapi.Entity.Pet.Pet_Item;
@@ -141,15 +141,23 @@ public class PostResource {
     }
 
     @GetMapping("/search/category={categoryid}")
-    public ResponseEntity<?> getPostbyCategory(@PathVariable("categoryid") int categoryid) {
+    public ResponseEntity<?> getPostsbyCategory(@PathVariable("categoryid") int categoryid) {
         List<Post> list = postService.findPostsByCategory(categoryid);
         if (!list.isEmpty())
             return ResponseEntity.status(HttpStatus.OK).body(list);
         else
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The category is empty!!!");
     }
+    @GetMapping("/search/contentkey={key}")
+    public ResponseEntity<?> getPostsbyContent(@PathVariable("key") String key) {
+        List<Post> list = postService.searchPostsByContent(key);
+        if (!list.isEmpty())
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't not find Posts by this key");
+    }
 
-    @GetMapping("/profile/post/userid={userid}")
+    @GetMapping("/profile/postuserid={userid}")
     public ResponseEntity<?> getPostsbyUser(@PathVariable("userid") String userid) {
         List<Post> list = postService.findPostsByUser(userid);
         if (list != null)
@@ -179,7 +187,7 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Bookmark fail!!");
     }
-    @PutMapping("/profile/post/id={postid}")
+    @PutMapping("/profile/mypost/postid={postid}")
     public ResponseEntity<?> changeExchange(@PathVariable("postid") String postid) {
     boolean result = postService.changeExchange(postid);
         if (result)

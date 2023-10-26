@@ -30,4 +30,5 @@ public interface PostService {
 
     boolean changeExchange(String postid);
     boolean createPost(Post post);
+    List<Post> searchPostsByContent(String key);
 }

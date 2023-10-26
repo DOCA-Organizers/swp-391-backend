@@ -1,4 +1,4 @@
-package com.example.demoapi.DTO.User;
+package com.example.demoapi.DTO.Post;
 
 import com.example.demoapi.Entity.Pet.Pet_Breed;
 import lombok.Data;

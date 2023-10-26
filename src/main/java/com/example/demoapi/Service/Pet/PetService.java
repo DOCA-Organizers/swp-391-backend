@@ -1,6 +1,7 @@
 package com.example.demoapi.Service.Pet;
 
-import com.example.demoapi.DTO.User.Pet_BreedDTO;
+
+import com.example.demoapi.DTO.Post.Pet_BreedDTO;
 import com.example.demoapi.Entity.Pet.Pet;
 import com.example.demoapi.Entity.Pet.Pet_Breed;
 import com.example.demoapi.Entity.Pet.Pet_Item;

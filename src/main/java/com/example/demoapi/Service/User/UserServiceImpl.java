@@ -119,9 +119,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> searchUserByUserName(String username) {
+    public User searchUserByUserName(String username) {
         try {
-            return userRepository.searchUserByUserName(username);
+            return userRepository.findUserByUserName(username);
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             return null;
@@ -319,8 +319,23 @@ public class UserServiceImpl implements UserService {
                 result.setRole(role);
                 result.setToken(Token);
                 return result;
-            }
-            else return null;
+            } else return null;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<User> searchUserNameByKeyWord(String key) {
+        try {
+            List<User> list = userRepository.searchUserByUserName(key);
+            if (list != null) {
+                return list;
+            } else return null;
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             return null;

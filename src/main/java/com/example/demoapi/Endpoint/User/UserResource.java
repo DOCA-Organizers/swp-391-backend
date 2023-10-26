@@ -27,9 +27,9 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
 
-    @GetMapping("/{userid}")
+    @GetMapping("/profile/userid={userid}")
     public ResponseEntity<?> getUser(@PathVariable("userid") String userid) {
-        User user = userService.getUserById(userid);
+        profileDTO user = userService.getUserProfileByUserId(userid);
         if(user != null) {
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }
@@ -47,7 +47,7 @@ public class UserResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Create User Failed !");
     }
 
-    @PutMapping("/user/{id}")
+    @PutMapping("/profile/update/userid={id}")
     public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String id){
         if(userService.getUserById(id) == null || user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
@@ -60,10 +60,10 @@ public class UserResource {
     }
 
 
-    @GetMapping("/profile/user/{id}")
-    public ResponseEntity<?> getProfileUser(@PathVariable String id){
-        if(userService.getUserProfileByUserId(id)!=null) {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.getUserProfileByUserId(id));
+    @GetMapping("/profile/username={name}")
+    public ResponseEntity<?> getProfileUser(@PathVariable String name){
+        if(userService.searchUserByUserName(name)!=null) {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.searchUserByUserName(name));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find this user");
     }
@@ -107,9 +107,10 @@ public class UserResource {
            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user");
        }
     }
-    @GetMapping("/user/getall")
-    public ResponseEntity<?> getallUser() {
-        List<User> list = userService.getAllUser();
+
+    @GetMapping("/search/listuser/key={key}")
+    public ResponseEntity<?> getListUserNamebyKeyword(@PathVariable("key") String key) {
+        List<User> list = userService.searchUserNameByKeyWord(key);
         if(list!=null) {
             return ResponseEntity.status(HttpStatus.OK).body(list);
         }

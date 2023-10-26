@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 public interface UserService {
-    List<User> searchUserByUserName(String username);
+    User searchUserByUserName(String username);
     List<User> findAll();
     boolean save(User user);
     boolean saveUser_Role(User user);
@@ -30,4 +30,5 @@ public interface UserService {
     Date getDateStartByUserId(String userId);
     profileDTO getUserProfileByUserId(String userid);
     userDTO loginByUsernameandPassword(loginDTO loginDTO);
+    List<User> searchUserNameByKeyWord(String key);
 }

@@ -29,14 +29,14 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
     Integer deletePostByPostId(String id);
 
     @Query(value = "update tblPost \n" +
-            "set [isexchange] = \n" +
+            "set [isSold] = \n" +
             "case \n" +
-            "when [isexchange] = 1 then 0\n" +
-            "when [isexchange] = 0 then 1\n" +
+            "when [isSold] = 1 then 0\n" +
+            "when [isSold] = 0 then 1\n" +
             "end\n" +
             "where [id] = ?1", nativeQuery = true)
     @Modifying
     @Transactional
-    Integer changePostExchange(String postid);
+    Integer changePostisSold(String postid);
 
 }

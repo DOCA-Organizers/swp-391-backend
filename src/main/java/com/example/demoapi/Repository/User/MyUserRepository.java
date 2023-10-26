@@ -16,7 +16,7 @@ public interface MyUserRepository extends JpaRepository<User, String>{
     @Query(value = "select * from [dbo].[tblUser]",nativeQuery = true)
     List<User> getAllUser();
     User findUserById(String id);
-    @Query(value = "select * from [dbo].[tblUser] where username like %?1% isactive=1",nativeQuery = true)
+    @Query(value = "select * from [dbo].[tblUser] where username like %?1% and isactive=1",nativeQuery = true)
     List<User> searchUserByUserName(String username);
     User findUserByUserName(String username);
     User findUserByEmail(String email);
