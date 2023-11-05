@@ -78,7 +78,7 @@ public class User implements UserDetails {
         Set<GrantedAuthority> authorities = new HashSet<>();
         for (User_Role userRole : user_roles) {
             if (userRole.isActive()) {
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.getRoleId().getName()));
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.getRoleId().getName().toUpperCase()));
             }
         }
         return authorities;

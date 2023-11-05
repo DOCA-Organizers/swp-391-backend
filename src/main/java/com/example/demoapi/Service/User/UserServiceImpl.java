@@ -102,7 +102,8 @@ public class UserServiceImpl implements UserService {
         try {
             User_Role user_role = new User_Role();
             user_role.setUserId(user);
-            Role role = roleRepository.findRoleByNameAndType("User", "All");
+            Role role = roleRepository.getRoleByNameAndType("User","All");
+            System.out.println(role.getId());
             user_role.setRoleId(role);
             Date currentDateTime = new Date();
             user_role.setDateStart(currentDateTime);
@@ -222,7 +223,7 @@ public class UserServiceImpl implements UserService {
             user_roleRepository.updateUserRole(curDate, user.getId());
             User_Role user_role = new User_Role();
             user_role.setUserId(user);
-            user_role.setRoleId(roleRepository.findRoleByNameAndType(role, type));
+            user_role.setRoleId(roleRepository.getRoleByNameAndType(role, type));
             user_role.setDateStart(curDate);
             user_role.setActive(true);
             user_roleRepository.save(user_role);

@@ -20,7 +20,8 @@ public class SecurityConfig {
         http.csrf(csrf->csrf.disable())
                 .cors(cors->cors.disable())
                 .authorizeHttpRequests(auth->auth.requestMatchers("/home/**").authenticated()
-                        .requestMatchers("/*/login","/*/register","/*/profile/*","/*/search/**").permitAll().anyRequest()
+                        .requestMatchers("/*/login","/*/register","/*/profile/*",
+                                "/*/search/**").permitAll().anyRequest()
                     .authenticated()
   //                      .permitAll()
                 )

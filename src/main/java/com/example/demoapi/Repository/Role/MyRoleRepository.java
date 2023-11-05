@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface MyRoleRepository extends JpaRepository<Role, Integer> {
     Role findRoleById(Integer id);
-    Role findRoleByNameAndType(String name, String type);
-    @Query(value = "select * from [dbo].[tblRole] where [id] = " +
-            "(select [roleid] from [dbo].[tblUser_Role] where [userid] = ?1 and [isactive] = 'true')", nativeQuery = true)
+    @Query(value = "select * from tblRole where name=?1 and type =?2", nativeQuery = true)
+    Role getRoleByNameAndType(String name, String type);
+    @Query(value = "select * from tblRole where id = " +
+            "(select roleid from tblUser_Role where userid = ?1 and isactive = 'true')", nativeQuery = true)
     Role GetRoleByUserId(String id);
 }

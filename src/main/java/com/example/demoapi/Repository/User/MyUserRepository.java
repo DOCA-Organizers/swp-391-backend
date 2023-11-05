@@ -13,33 +13,33 @@ import java.util.Date;
 import java.util.List;
 
 public interface MyUserRepository extends JpaRepository<User, String>{
-    @Query(value = "select * from [dbo].[tblUser]",nativeQuery = true)
+    @Query(value = "select * from tblUser ",nativeQuery = true)
     List<User> getAllUser();
     User findUserById(String id);
-    @Query(value = "select * from [dbo].[tblUser] where username like %?1% and isactive=1",nativeQuery = true)
+    @Query(value = "select * from tblUser where username like %?1% and isactive=1",nativeQuery = true)
     List<User> searchUserByUserName(String username);
     User findUserByUserName(String username);
     User findUserByEmail(String email);
-    @Query(value = "update [dbo].[tblUser] set [isactive] = \n" +
+    @Query(value = "update tblUser set isactive = \n" +
                         "case\n" +
-                            "when [isactive] = 1 then 0 \n" +
-                            "when [isactive] = 0 then 1 \n" +
+                            "when isactive = 1 then 0 \n" +
+                            "when isactive = 0 then 1 \n" +
                         "end \n" +
-                        "where [username] = ?1", nativeQuery = true)
+                        "where username = ?1", nativeQuery = true)
     @Modifying
     @Transactional
     Integer changeStatusUserByUserName(String username);
-    @Query(value = "update [dbo].[tblUser] set [isban] = \n" +
+    @Query(value = "update tblUser set isban = \n" +
                         "case\n" +
-                            "when [isban] = 1 then 0 \n" +
-                            "when [isban] = 0 then 1 \n" +
+                            "when isban = 1 then 0 \n" +
+                            "when isban = 0 then 1 \n" +
                         "end \n" +
-                        "where [username] = ?1", nativeQuery = true)
+                        "where username = ?1", nativeQuery = true)
     @Modifying
     @Transactional
     Integer changeBanStatusUserByUserName(String username);
-    @Query(value = "update [dbo].[tblUser] set [password] = :password, [fullname] = :fullName, " +
-            "[email] = :email, [dob] = :dob, [gender] = :gender, [avt] = :avt where [id] = :id", nativeQuery = true)
+    @Query(value = "update tblUser set password = :password, fullname = :fullName, " +
+            "email = :email, dob = :dob, gender = :gender, avt = :avt where id = :id", nativeQuery = true)
     @Modifying
     @Transactional
     Integer updateUserById(@Param("password") String password, @Param("fullName") String fullName, @Param("email") String email,
