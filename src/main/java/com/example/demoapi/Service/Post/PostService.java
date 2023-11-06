@@ -30,7 +30,7 @@ public interface PostService {
     List<Post> showBookmarkPosts(String userid);
     boolean deletePostByPostID(String postId);
     int savePostsimg(String postid,List<postImg> listimg);
-
+    List<Report> getReportByPostId(String postid);
     boolean changeExchange(String postid);
     String createPost(createDTO post);
     List<Post> searchPostsByContent(String key);

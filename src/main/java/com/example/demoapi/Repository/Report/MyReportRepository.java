@@ -49,4 +49,6 @@ public interface MyReportRepository extends JpaRepository<Report, String> {
         }
         return reportList;
     }
+    @Query(value = "select * from tblReport where postid = ?1",nativeQuery = true)
+    List<Report> getReportsByPostId(String postid);
 }

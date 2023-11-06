@@ -3,6 +3,7 @@ package com.example.demoapi.Endpoint.Post;
 import com.example.demoapi.DTO.Post.Pet_BreedDTO;
 import com.example.demoapi.DTO.Post.createDTO;
 import com.example.demoapi.DTO.Post.markDTO;
+import com.example.demoapi.DTO.Post.reportDTO;
 import com.example.demoapi.Entity.Pet.Pet;
 import com.example.demoapi.Entity.Pet.Pet_Breed;
 import com.example.demoapi.Entity.Pet.Pet_Item;
@@ -59,10 +60,9 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
     }
 
-    @PostMapping("/report/{userid}/{id}")
-    public ResponseEntity<?> reportAPostOrComment(@PathVariable("userid") String userid,
-            @PathVariable("id") String id, @RequestBody String msg) {
-        if (postService.reportAPostOrComment(userid, id, id, msg)) {
+    @PostMapping("/report")
+    public ResponseEntity<?> reportAPostOrComment(@RequestBody reportDTO reportDTO) {
+        if (postService.reportAPostOrComment(reportDTO.getUserId(),reportDTO.getPostId(),reportDTO.getCommentId(),reportDTO.getMessage())) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Report failed!");
@@ -90,6 +90,13 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(postService.showListPostWithNumberOfReport());
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Show list failed!");
+    }
+    @GetMapping("/report/postid={postid}")
+        public ResponseEntity<?> showListReportPost(@PathVariable("postid") String postid) {
+        if (postService.getReportByPostId(postid)!=null) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.getReportByPostId(postid));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("null");
     }
 
     @GetMapping("/post={postid}")

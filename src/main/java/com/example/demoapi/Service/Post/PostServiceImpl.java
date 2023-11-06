@@ -202,6 +202,19 @@
     }
 
     @Override
+    public List<Report> getReportByPostId(String postid) {
+      try {
+        return reportRepository.getReportsByPostId(postid);
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    @Override
     public List<Post> searchPostsByContent(String key) {
       try {
         return postRepository.findPostsByContent(key);
