@@ -14,5 +14,7 @@ public class createDTO {
     private Integer categoryid;
     private String  content;
     private boolean exchange;
-    private List<PostImg> list;
+    private List<postImg> listpostimg;
+    private List<exchangePet> listpet;
+    private List<exchangeItem> listitem;
 }

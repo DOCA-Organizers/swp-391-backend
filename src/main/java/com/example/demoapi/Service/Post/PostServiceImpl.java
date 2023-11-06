@@ -1,15 +1,14 @@
   package com.example.demoapi.Service.Post;
 
+  import com.example.demoapi.DTO.Post.createDTO;
+  import com.example.demoapi.DTO.Post.postImg;
   import com.example.demoapi.DTO.User.ReportDTO;
-  import com.example.demoapi.Entity.Post.Category;
-import com.example.demoapi.Entity.Post.Comment;
-import com.example.demoapi.Entity.Post.Post;
-  import com.example.demoapi.Entity.Post.React;
-  import com.example.demoapi.Entity.Post.Report;
+  import com.example.demoapi.Entity.Post.*;
   import com.example.demoapi.Repository.Bookmark.BookmarkRepository;
   import com.example.demoapi.Repository.Category.CategoryRepository;
   import com.example.demoapi.Repository.Comment.CommentRepository;
   import com.example.demoapi.Repository.Post.PostRepository;
+  import com.example.demoapi.Repository.PostImg.PostImgRepository;
   import com.example.demoapi.Repository.React.ReactRepository;
   import com.example.demoapi.Repository.Report.ReportRepository;
   import com.example.demoapi.Repository.User.UserRepository;
@@ -38,7 +37,8 @@ import com.example.demoapi.Entity.Post.Post;
     private ReportRepository reportRepository;
     @Autowired
     private BookmarkRepository bookmarkRepository;
-
+    @Autowired
+    private PostImgRepository postImgRepository;
     @Override
     public boolean reactAPostOrComment(String userId, String postId, String commentId) {
       try {
@@ -149,19 +149,55 @@ import com.example.demoapi.Entity.Post.Post;
       }
     }
 
+
     @Override
-    public boolean createPost(Post post) {
-      try{
+    public String createPost(createDTO createDTO) {
+      try{Post post = new Post();
+        post.setId(UUID.randomUUID().toString());
+        post.setCategory(categoryRepository.findCategoryById(createDTO.getCategoryid()));
+        post.setUser(userRepository.findUserById(createDTO.getUserid()));
+        post.setActive(true);
+        post.setCreateTime(new Date());
+        post.setContent(createDTO.getContent());
+        post.setExchange(createDTO.isExchange());
+        if (createDTO.isExchange()) {
+          post.setSold(true);
+        }
+        else post.setSold(false);
         postRepository.save(post);
-        return true;
+        return post.getId();
       }
       catch(DataIntegrityViolationException e){
         e.printStackTrace();
-        return false;
+        return null;
       }
       catch (Exception e){
         e.printStackTrace();
-        return false;
+        return null;
+      }
+    }
+    @Override
+    public int savePostsimg(String postid, List<postImg> listimg) {
+      try {
+        int result =0;
+        Post post = postRepository.findPostById(postid);
+        for (postImg p: listimg
+        ) {
+          PostImg postimg = new PostImg();
+          postimg.setId(UUID.randomUUID().toString());
+          postimg.setImg(p.getImg());
+          postimg.setDescription(p.getDescription());
+          postimg.setPostId(post);
+          postImgRepository.save(postimg);
+          result=result+1;
+        }
+        return result;
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return 0;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return 0;
       }
     }
 

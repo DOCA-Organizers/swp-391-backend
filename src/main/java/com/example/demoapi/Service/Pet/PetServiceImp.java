@@ -1,6 +1,8 @@
 package com.example.demoapi.Service.Pet;
 
 import com.example.demoapi.DTO.Post.Pet_BreedDTO;
+import com.example.demoapi.DTO.Post.exchangeItem;
+import com.example.demoapi.DTO.Post.exchangePet;
 import com.example.demoapi.Entity.Pet.Pet;
 import com.example.demoapi.Entity.Pet.Pet_Breed;
 import com.example.demoapi.Entity.Pet.Pet_Item;
@@ -19,6 +21,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PetServiceImp implements PetService{
@@ -111,4 +114,64 @@ public class PetServiceImp implements PetService{
             return null;
         }
     }
+    @Override
+    public int savePets(String postid, List<exchangePet> list) {
+        try{
+            int result = 0;
+            Post post = postRepository.findPostById(postid);
+            for ( exchangePet e: list
+            ) {
+                Pet pet = new Pet();
+                pet.setId(UUID.randomUUID().toString());
+                pet.setName(e.getName());
+                pet.setPrice(e.getPrice());
+                pet.setAge(e.getAge());
+                pet.setGender(e.isGender());
+                pet.setImg(e.getImg());
+                pet.setType(e.getType());
+                pet.setDescription(e.getDescription());
+                pet.setPostId(post);
+                petRepository.save(pet);
+                result=result+1;
+            }
+            return result;
+        }
+        catch(DataIntegrityViolationException e){
+            e.printStackTrace();
+            return 0;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    @Override
+    public int saveItems(String postid, List<exchangeItem> list) {
+        try {
+            int result = 0;
+            Post post = postRepository.findPostById(postid);
+            for (exchangeItem e : list
+            ) {
+                Pet_Item pet = new Pet_Item();
+                pet.setId(UUID.randomUUID().toString());
+                pet.setPet_item(e.getPet_item());
+                pet.setPrice(e.getPrice());
+                pet.setPet_type(e.getPet_type());
+                pet.setImg(e.getImg());
+                pet.setDescription(e.getDescription());
+                pet.setPostId(post);
+                petItemRepository.save(pet);
+                result = result + 1;
+            }
+            return result;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
 }

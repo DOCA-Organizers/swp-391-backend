@@ -1,5 +1,7 @@
 package com.example.demoapi.Service.Post;
 
+import com.example.demoapi.DTO.Post.createDTO;
+import com.example.demoapi.DTO.Post.postImg;
 import com.example.demoapi.DTO.User.ReportDTO;
 import com.example.demoapi.Entity.Post.Category;
 import com.example.demoapi.Entity.Post.Comment;
@@ -27,8 +29,9 @@ public interface PostService {
     List<ReportDTO> showListPostWithNumberOfReport();
     List<Post> showBookmarkPosts(String userid);
     boolean deletePostByPostID(String postId);
+    int savePostsimg(String postid,List<postImg> listimg);
 
     boolean changeExchange(String postid);
-    boolean createPost(Post post);
+    String createPost(createDTO post);
     List<Post> searchPostsByContent(String key);
 }

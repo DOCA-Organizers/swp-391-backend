@@ -195,23 +195,21 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't change the exchange!!");
     }
     @PostMapping("/CreatePost")
-    public ResponseEntity<?> createPost(@RequestBody createDTO createDTO){
-        Post post = new Post();
-        post.setId(UUID.randomUUID().toString());
-        post.setCategory(categoryRepository.findCategoryById(createDTO.getCategoryid()));
-        post.setUser(userService.getUserById(createDTO.getUserid()));
-        post.setActive(true);
-        post.setCreateTime(new Date());
-        post.setContent(createDTO.getContent());
-        post.setExchange(createDTO.isExchange());
-        if (createDTO.isExchange()) {
-            post.setSold(true);
+    public ResponseEntity<?> createPost(@RequestBody createDTO createDTO) {
+        String createPost = postService.createPost(createDTO);
+        int saveimg = 0;
+        if (createDTO.getListpostimg() != null) {
+            saveimg = postService.savePostsimg(createPost, createDTO.getListpostimg());
         }
-        else post.setSold(false);
-        if(postService.createPost(post)){
+        if (createDTO.getListpet() != null) {
+            int savepet = petService.savePets(createPost, createDTO.getListpet());
+        }
+        if (createDTO.getListitem() != null) {
+            int saveItem = petService.saveItems(createPost, createDTO.getListitem());
+        }
+        if (createDTO != null)
             return ResponseEntity.status(HttpStatus.OK).body(true);
-        }
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't create Post");
+        else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't create Post");
     }
     @GetMapping("/pet_breed/postid={postid}")
     public ResponseEntity<?> getPetBreedByPost(@PathVariable("postid") String postid) {
