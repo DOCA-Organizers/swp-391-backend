@@ -1,9 +1,6 @@
 package com.example.demoapi.Endpoint.Post;
 
-import com.example.demoapi.DTO.Post.Pet_BreedDTO;
-import com.example.demoapi.DTO.Post.createDTO;
-import com.example.demoapi.DTO.Post.markDTO;
-import com.example.demoapi.DTO.Post.reportDTO;
+import com.example.demoapi.DTO.Post.*;
 import com.example.demoapi.Entity.Pet.Pet;
 import com.example.demoapi.Entity.Pet.Pet_Breed;
 import com.example.demoapi.Entity.Pet.Pet_Item;
@@ -22,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.channels.Pipe;
@@ -99,17 +97,15 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("null");
     }
 
-    @GetMapping("/post={postid}")
+    @GetMapping("/comment/post={postid}")
     public ResponseEntity<?> getCommentByPost(@PathVariable("postid") String postid) {
         List<Comment> list = postService.getCommentsByPost(postid);
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @PostMapping("/comment/{userid}/{postid}")
-    public ResponseEntity<?> createComment(@PathVariable("userid") String userid,
-            @PathVariable("postid") String postid,
-            @RequestBody String content) {
-        if (postService.createComment(userid, postid, content)) {
+    @PostMapping("/comment")
+    public ResponseEntity<?> createComment(@RequestBody commentDTO commentDTO) {
+        if (postService.createComment(commentDTO.getUserId(), commentDTO.getPostId(), commentDTO.getContent())) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Comment failed!");
