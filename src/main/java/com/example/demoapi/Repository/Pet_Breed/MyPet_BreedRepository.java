@@ -12,11 +12,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface MyPet_BreedRepository extends JpaRepository<Pet_Breed,String> {
-    Pet_Breed findPet_BreedByPostId(Post post);
+   // Pet_Breed findPet_BreedByPostId(Post post);
+    @Query(value = "select * FROM Pet_Breed where pet_type =?1 and breedname=?2 ",nativeQuery = true)
+    Pet_Breed findPetBreedByPetTypeAndBreedname(String type, String breedname);
+    @Query(value = "select * FROM Pet_Breed where id =?1 ",nativeQuery = true)
+    Pet_Breed getPet_BreedById(String Id);
+
     @Query(value = "SELECT DISTINCT [breedname] FROM [dbo].[Pet_Breed]\n" +
             "WHERE [pet_type] = ?1\n" , nativeQuery = true)
     List<Object[]> getBreedNameByPetType(String pet_type);
-
     default List<Pet_BreedDTO> generateBreedNameList(String pet_type) {
         List<Object[]> data = getBreedNameByPetType(pet_type);
         List<Pet_BreedDTO> breedNameList = new ArrayList<>();
@@ -27,4 +31,5 @@ public interface MyPet_BreedRepository extends JpaRepository<Pet_Breed,String> {
         }
         return breedNameList;
     }
+
 }

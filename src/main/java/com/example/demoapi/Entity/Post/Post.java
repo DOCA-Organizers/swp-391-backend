@@ -1,5 +1,6 @@
 package com.example.demoapi.Entity.Post;
 
+import com.example.demoapi.Entity.Pet.Pet_Breed;
 import com.example.demoapi.Entity.User.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -56,5 +57,10 @@ public class Post {
     @JsonIgnore
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Report> reports;
+
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "pet_Breedid", nullable = false)
+    private Pet_Breed pet_Breed;
 
 }

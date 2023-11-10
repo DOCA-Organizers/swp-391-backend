@@ -43,24 +43,24 @@ public class PetServiceImp implements PetService{
     private PetRepository petRepository;
     @Autowired
     private Pet_ItemRepository petItemRepository;
-    @Override
-    public Pet_Breed findPet_BreedByPostId(String postid) {
-        try{
-            Post post = postRepository.findPostById(postid);
-            if (post.isActive()){
-                return pet_breedRepository.findPet_BreedByPostId(post);
-            }
-            else return null;
-        }
-        catch(DataIntegrityViolationException e){
-            e.printStackTrace();
-            return null;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
+//    @Override
+//    public Pet_Breed findPet_BreedByPostId(String postid) {
+//        try{
+//            Post post = postRepository.findPostById(postid);
+//            if (post.isActive()){
+//                return pet_breedRepository.findPet_BreedByPostId(post);
+//            }
+//            else return null;
+//        }
+//        catch(DataIntegrityViolationException e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//        catch (Exception e){
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     @Override
     public List<Pet_BreedDTO> getBreedNameByPetType(String pet_type) {
@@ -114,6 +114,46 @@ public class PetServiceImp implements PetService{
             return null;
         }
     }
+
+    @Override
+    public String getPetBreedbytypeandname(String type, String name) {
+        try{
+            Pet_Breed pet_breed = pet_breedRepository.findPetBreedByPetTypeAndBreedname(type,name);
+            if (pet_breed!=null){
+                return pet_breed.getId();
+            }
+            else return null;
+        }
+        catch(DataIntegrityViolationException e){
+            e.printStackTrace();
+            return null;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public String addPetBreed(String petType, String petBreed) {
+        try{
+            Pet_Breed pet_breed = new Pet_Breed();
+            pet_breed.setPet_type(petType);
+            pet_breed.setBreedname(petBreed);
+            pet_breed.setId(UUID.randomUUID().toString());
+            pet_breedRepository.save(pet_breed);
+            return pet_breed.getId();
+        }
+        catch(DataIntegrityViolationException e){
+            e.printStackTrace();
+            return null;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     @Override
     public int savePets(String postid, List<exchangePet> list) {
         try{
@@ -171,6 +211,25 @@ public class PetServiceImp implements PetService{
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    @Override
+    public boolean dupplicateBreed(String type, String name) {
+        try{
+            Pet_Breed pet_breed = pet_breedRepository.findPetBreedByPetTypeAndBreedname(type,name);
+            if (pet_breed!=null){
+                return true;
+            }
+            else return false;
+        }
+        catch(DataIntegrityViolationException e){
+            e.printStackTrace();
+            return false;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return false;
         }
     }
 

@@ -27,7 +27,7 @@ import java.security.PublicKey;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
+@CrossOrigin
 @RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
@@ -199,7 +199,13 @@ public class PostResource {
     }
     @PostMapping("/CreatePost")
     public ResponseEntity<?> createPost(@RequestBody createDTO createDTO) {
-        String createPost = postService.createPost(createDTO);
+        String createBreed="";
+            if(petService.dupplicateBreed(createDTO.getPet_type(),createDTO.getPet_breed())) {
+                createBreed = petService.getPetBreedbytypeandname(createDTO.getPet_type(),createDTO.getPet_breed());
+            }
+            else
+            createBreed = petService.addPetBreed(createDTO.getPet_type(), createDTO.getPet_breed());
+        String createPost = postService.createPost(createDTO,createBreed);
         int saveimg = 0;
         if (createDTO.getListpostimg() != null) {
             saveimg = postService.savePostsimg(createPost, createDTO.getListpostimg());
@@ -214,14 +220,14 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Can't create Post");
     }
-    @GetMapping("/pet_breed/postid={postid}")
-    public ResponseEntity<?> getPetBreedByPost(@PathVariable("postid") String postid) {
-        Pet_Breed petBreed = petService.findPet_BreedByPostId(postid);
-        if (petBreed != null)
-            return ResponseEntity.status(HttpStatus.OK).body(petBreed);
-        else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet_breed not found!");
-    }
+//    @GetMapping("/pet_breed/postid={postid}")
+//    public ResponseEntity<?> getPetBreedByPost(@PathVariable("postid") String postid) {
+//        Pet_Breed petBreed = petService.findPet_BreedByPostId(postid);
+//        if (petBreed != null)
+//            return ResponseEntity.status(HttpStatus.OK).body(petBreed);
+//        else
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet_breed not found!");
+//    }
 
     @GetMapping("/pet_breed/pet_type={pet_type}")
     public ResponseEntity<?> getBreedNameByPetType(@PathVariable("pet_type") String pet_type) {

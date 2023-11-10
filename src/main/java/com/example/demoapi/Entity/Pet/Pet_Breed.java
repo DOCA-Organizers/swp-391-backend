@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "Pet_Breed")
 @Data
@@ -20,7 +22,6 @@ public class Pet_Breed {
     private String pet_type;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "postid", nullable = false)
-    private Post postId;
+    @OneToMany(mappedBy = "pet_Breed")
+    private Collection<Post> posts;
 }

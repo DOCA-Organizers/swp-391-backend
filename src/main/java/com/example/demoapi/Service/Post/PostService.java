@@ -32,6 +32,6 @@ public interface PostService {
     int savePostsimg(String postid,List<postImg> listimg);
     List<Report> getReportByPostId(String postid);
     boolean changeExchange(String postid);
-    String createPost(createDTO post);
+    String createPost(createDTO post,String breadId);
     List<Post> searchPostsByContent(String key);
 }

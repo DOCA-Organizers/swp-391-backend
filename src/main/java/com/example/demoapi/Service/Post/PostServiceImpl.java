@@ -7,6 +7,7 @@
   import com.example.demoapi.Repository.Bookmark.BookmarkRepository;
   import com.example.demoapi.Repository.Category.CategoryRepository;
   import com.example.demoapi.Repository.Comment.CommentRepository;
+  import com.example.demoapi.Repository.Pet_Breed.Pet_BreedRepository;
   import com.example.demoapi.Repository.Post.PostRepository;
   import com.example.demoapi.Repository.PostImg.PostImgRepository;
   import com.example.demoapi.Repository.React.ReactRepository;
@@ -39,6 +40,8 @@
     private BookmarkRepository bookmarkRepository;
     @Autowired
     private PostImgRepository postImgRepository;
+    @Autowired
+    private Pet_BreedRepository pet_breedRepository;
     @Override
     public boolean reactAPostOrComment(String userId, String postId, String commentId) {
       try {
@@ -151,7 +154,7 @@
 
 
     @Override
-    public String createPost(createDTO createDTO) {
+    public String createPost(createDTO createDTO,String petbread) {
       try{Post post = new Post();
         post.setId(UUID.randomUUID().toString());
         post.setCategory(categoryRepository.findCategoryById(createDTO.getCategoryid()));
@@ -164,6 +167,7 @@
           post.setSold(true);
         }
         else post.setSold(false);
+        post.setPet_Breed(pet_breedRepository.getPet_BreedById(petbread));
         postRepository.save(post);
         return post.getId();
       }
