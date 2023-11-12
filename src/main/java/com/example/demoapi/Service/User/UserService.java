@@ -31,4 +31,6 @@ public interface UserService {
     profileDTO getUserProfileByUserId(String userid);
     userDTO loginByUsernameandPassword(loginDTO loginDTO);
     List<User> searchUserNameByKeyWord(String key);
+    List<String> getUsernameReactbyPostid(String postid);
+    List<String> getUsernameReactbyCommentid(String commentid);
 }

@@ -252,5 +252,19 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet Item Not Found!");
     }
+    @GetMapping("/react/users/postid={postid}")
+    public ResponseEntity<?> getUsernameReactbyPostid(@PathVariable("postid") String postid) {
+        List<String> list = userService.getUsernameReactbyPostid(postid);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No user react");
+    }
+    @GetMapping("/react/users/commentid={commentid}")
+    public ResponseEntity<?> getUsernameReactbyCommentid(@PathVariable("commentid") String commnetid) {
+        List<String> list = userService.getUsernameReactbyCommentid(commnetid);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No user react");
+    }
 
 }

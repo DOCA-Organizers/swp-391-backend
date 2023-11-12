@@ -49,6 +49,7 @@
         react.setActive(true);
         react.setUserId(userRepository.findUserById(userId));
         react.setPostId(postRepository.findPostById(postId));
+        react.setCreateTime(new Date());
         react.setCommentId(commentRepository.findCommentById(commentId));
         React checkReact = reactRepository.findReactByUserIdAndPostIdAndCommentId(userRepository.findUserById(userId),
                 postRepository.findPostById(postId), commentRepository.findCommentById(commentId));

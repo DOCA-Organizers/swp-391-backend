@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 public interface MyReactRepository extends JpaRepository<React, Integer> {
     @Query(value = "SELECT COUNT(*) AS react_count\n" +
                     "FROM [dbo].[tblReact]\n" +
@@ -38,4 +40,6 @@ public interface MyReactRepository extends JpaRepository<React, Integer> {
     @Transactional
     Integer deleteReactById(String id);
     React findReactByUserId(User userId);
+
+
 }

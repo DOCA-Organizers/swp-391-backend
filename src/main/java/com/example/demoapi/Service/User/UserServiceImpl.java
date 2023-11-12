@@ -345,4 +345,36 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public List<String> getUsernameReactbyPostid(String postid) {
+        try {
+            List<String> list = userRepository.getUserNameReactedbyPostid(postid);
+                if (list != null) {
+                return list;
+            } else return null;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<String> getUsernameReactbyCommentid(String commentid) {
+        try {
+            List<String> list = userRepository.getUserNameReactedbyCommentid(commentid);
+            if (list != null) {
+                return list;
+            } else return null;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

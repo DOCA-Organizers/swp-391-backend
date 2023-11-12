@@ -46,4 +46,8 @@ public interface MyUserRepository extends JpaRepository<User, String>{
                            @Param("dob") Date dob, @Param("gender") boolean gender, @Param("avt") String avt, @Param("id") String id);
     @Query(value = "select top 1 datestart from tblUser_Role where userid = ? order by datestart asc",nativeQuery = true)
     Date getDateStart(String Userid);
+    @Query(value= "select username from tblUser where id in (select userid from tblReact where postid= ?1 and isactive = 1)",nativeQuery = true)
+    List<String> getUserNameReactedbyPostid(String postid);
+    @Query(value= "select username from tblUser where id in (select userid from tblReact where commentid= ?1 and isactive = 1)",nativeQuery = true)
+    List<String> getUserNameReactedbyCommentid(String commentid);
 }
