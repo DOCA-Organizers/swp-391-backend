@@ -16,6 +16,7 @@ public class PostImg {
     @Column(name = "description", updatable = false, unique = true)
     private String description;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "postid")
     private Post postId;

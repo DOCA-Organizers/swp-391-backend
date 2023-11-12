@@ -68,4 +68,7 @@ public class Post {
 
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Collection<Pet_Item> petItems;
+
+    @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<PostImg> postImgs;
 }
