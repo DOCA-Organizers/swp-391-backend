@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "tblPet")
 @Data
@@ -36,6 +38,7 @@ public class Pet {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "postid", nullable = false)
-    private Post postId;
+   @JoinColumn(name = "postid", nullable = false)
+   private Post postId;
+
 }
