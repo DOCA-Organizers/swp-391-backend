@@ -18,7 +18,6 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
     @Query(value = "select a.* from [dbo].[tblPost] a where a.[content] like %?1%", nativeQuery = true)
     List<Post> findPostsByContent(String content);
     List<Post> findPostsByUser(User user);
-    List<Post> searchPostById(String id);
     @Query(value = "select * from tblPost where id in (select postid from tblBookmark where userid= ?1) order by createtime desc",nativeQuery = true)
     List<Post> showPostbookmark(String userid);
     @Query(value = "UPDATE [dbo].[tblPost] \n" +

@@ -135,12 +135,21 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Comment failed !");
     }
 
+
     @DeleteMapping("/post/delete/{postid}")
     public ResponseEntity<?> deletePostByPostId(@PathVariable("postid") String postid) {
-        if (postService.deletePostByPostID(postid)) {
+        if (postService.findCommentById(postid)!=null) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Delete Comment failed !");
+    }
+    @GetMapping("/post/detail/postid={postid}")
+    public ResponseEntity<?> getPostbyID(@PathVariable("postid") String postid) {
+        Post post = postService.getPostbyPostid(postid);
+        if ( post != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(post);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count comment failed");
     }
 
     @GetMapping("/search/category={categoryid}")

@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .cors(cors->cors.disable())
                 .authorizeHttpRequests(auth->auth.requestMatchers("/home/**").authenticated()
                         .requestMatchers("/*/login","/*/register","/*/profile/*",
-                                "/*/search/**").permitAll().anyRequest()
+                                "/*/search/**","/*/post/detail/**").permitAll().anyRequest()
                     .authenticated()
   //                      .permitAll()
                 )

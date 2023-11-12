@@ -34,4 +34,5 @@ public interface PostService {
     boolean changeExchange(String postid);
     String createPost(createDTO post,String breadId);
     List<Post> searchPostsByContent(String key);
+    Post getPostbyPostid(String postid);
 }

@@ -233,6 +233,19 @@
     }
 
     @Override
+    public Post getPostbyPostid(String postid) {
+      try {
+        return postRepository.findPostById(postid);
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    @Override
   public boolean createComment(String userId, String postId, String content) {
     try {
       Comment comment = new Comment();
