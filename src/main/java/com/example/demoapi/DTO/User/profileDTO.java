@@ -10,5 +10,7 @@ public class profileDTO {
     private User user;
     private Role role;
     private Date datestart;
-
+    int numofpost;
+    int numofcomment;
+    int numofreact;
 }

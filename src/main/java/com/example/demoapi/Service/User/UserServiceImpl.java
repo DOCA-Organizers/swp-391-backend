@@ -309,6 +309,9 @@ public class UserServiceImpl implements UserService {
             profile.setUser(userRepository.findUserById(userid));
             profile.setRole(roleRepository.GetRoleByUserId(userid));
             profile.setDatestart(userRepository.getDateStart(userid));
+            profile.setNumofreact(userRepository.countReactbyuserid(userid));
+            profile.setNumofpost(userRepository.countPostsbyuserid(userid));
+            profile.setNumofcomment(userRepository.countReactbyuserid(userid));
             return profile;
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
