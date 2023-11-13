@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface MyPostRepository extends JpaRepository<Post,String> {
     List<Post> findPostsByCategory(Category category);
+    @Query(value = "select * from [dbo].[tblPost]  where isactive=1", nativeQuery = true)
+    List<Post> getAllByActiveIsTrue();
     Post findPostById(String id);
     @Query(value = "select a.* from [dbo].[tblPost] a where a.[content] like %?1%", nativeQuery = true)
     List<Post> findPostsByContent(String content);

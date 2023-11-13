@@ -37,4 +37,5 @@ public interface PostService {
     List<Post> searchPostsByContent(String key);
     Post getPostbyPostid(String postid);
     List<categoryDTO> getCategoryDTO();
+    List<Post> getall();
 }

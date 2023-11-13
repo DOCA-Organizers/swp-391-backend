@@ -290,5 +290,12 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
     }
+    @GetMapping("/Post/All")
+    public ResponseEntity<?> getAll() {
+        List<Post> list = postService.getall();
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
+    }
 
 }
