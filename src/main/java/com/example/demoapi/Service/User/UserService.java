@@ -2,6 +2,7 @@ package com.example.demoapi.Service.User;
 
 import com.example.demoapi.DTO.User.loginDTO;
 import com.example.demoapi.DTO.User.profileDTO;
+import com.example.demoapi.DTO.User.topDTO;
 import com.example.demoapi.DTO.User.userDTO;
 import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
@@ -33,4 +34,5 @@ public interface UserService {
     List<User> searchUserNameByKeyWord(String key);
     List<String> getUsernameReactbyPostid(String postid);
     List<String> getUsernameReactbyCommentid(String commentid);
+    List<topDTO> getTopUseridPost();
 }

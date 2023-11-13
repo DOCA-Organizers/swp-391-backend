@@ -2,6 +2,7 @@ package com.example.demoapi.Service.User;
 
 import com.example.demoapi.DTO.User.loginDTO;
 import com.example.demoapi.DTO.User.profileDTO;
+import com.example.demoapi.DTO.User.topDTO;
 import com.example.demoapi.DTO.User.userDTO;
 import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -366,6 +368,31 @@ public class UserServiceImpl implements UserService {
     public List<String> getUsernameReactbyCommentid(String commentid) {
         try {
             List<String> list = userRepository.getUserNameReactedbyCommentid(commentid);
+            if (list != null) {
+                return list;
+            } else return null;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public List<topDTO> getTopUseridPost() {
+        try {
+           List<String> listuserid = userRepository.getTop3UserPosted();
+           List<topDTO> list = new ArrayList<>();
+            for (String userid: listuserid
+                 ) {
+                topDTO top = new topDTO();
+                top.setId(userid);
+                top.setUserName(userRepository.findUserById(userid).getUsername());
+                top.setNumPost(userRepository.countPostsbyuserid(userid));
+                list.add(top);
+            }
             if (list != null) {
                 return list;
             } else return null;

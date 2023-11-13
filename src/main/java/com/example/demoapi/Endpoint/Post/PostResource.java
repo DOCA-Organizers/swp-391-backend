@@ -1,6 +1,7 @@
 package com.example.demoapi.Endpoint.Post;
 
 import com.example.demoapi.DTO.Post.*;
+import com.example.demoapi.DTO.User.topDTO;
 import com.example.demoapi.Entity.Pet.Pet;
 import com.example.demoapi.Entity.Pet.Pet_Breed;
 import com.example.demoapi.Entity.Pet.Pet_Item;
@@ -282,4 +283,12 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
     }
+    @GetMapping("/Top")
+    public ResponseEntity<?> topUser() {
+        List<topDTO> list = userService.getTopUseridPost();
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
+    }
+
 }

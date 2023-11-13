@@ -22,7 +22,7 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping("/userlist")
     public ResponseEntity<?> getAllUser() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
     }
