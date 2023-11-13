@@ -404,4 +404,29 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public List<topDTO> getListUserinfo() {
+        try {
+            List<String> listuserid = userRepository.getListUserPosted();
+            List<topDTO> list = new ArrayList<>();
+            for (String userid: listuserid
+            ) {
+                topDTO top = new topDTO();
+                top.setId(userid);
+                top.setUserName(userRepository.findUserById(userid).getUsername());
+                top.setNumPost(userRepository.countPostsbyuserid(userid));
+                list.add(top);
+            }
+            if (list != null) {
+                return list;
+            } else return null;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

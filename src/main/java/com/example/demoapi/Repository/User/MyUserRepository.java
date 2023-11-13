@@ -54,6 +54,10 @@ public interface MyUserRepository extends JpaRepository<User, String>{
     @Query(value = "select top 3 userid from tblPost where isactive = 1 group by userid order by count(id) desc",nativeQuery = true)
     List<String> getTop3UserPosted();
 
+    @Query(value = "select userid from tblPost where isactive = 1 group by userid order by count(id) desc",nativeQuery = true)
+    List<String> getListUserPosted();
+
+
     @Query(value = "select count (id) from tblUser where isactive=1",nativeQuery = true)
     int countUserIsActive();
 

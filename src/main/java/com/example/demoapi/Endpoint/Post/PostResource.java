@@ -283,9 +283,16 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
     }
-    @GetMapping("/Top")
+    @GetMapping("/Top3")
     public ResponseEntity<?> topUser() {
         List<topDTO> list = userService.getTopUseridPost();
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
+    }
+    @GetMapping("/TopList")
+    public ResponseEntity<?> topListUser() {
+        List<topDTO> list = userService.getListUserinfo();
         if (list != null)
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");

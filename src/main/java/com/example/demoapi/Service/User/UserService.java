@@ -35,4 +35,5 @@ public interface UserService {
     List<String> getUsernameReactbyPostid(String postid);
     List<String> getUsernameReactbyCommentid(String commentid);
     List<topDTO> getTopUseridPost();
+    List<topDTO> getListUserinfo();
 }
