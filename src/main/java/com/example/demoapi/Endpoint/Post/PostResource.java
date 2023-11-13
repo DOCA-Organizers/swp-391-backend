@@ -275,5 +275,11 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No user react");
     }
-
+    @GetMapping("/CategoryInfo")
+    public ResponseEntity<?> getHome() {
+        List<categoryDTO> list = postService.getCategoryDTO();
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
+    }
 }

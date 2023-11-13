@@ -1,5 +1,6 @@
   package com.example.demoapi.Service.Post;
 
+  import com.example.demoapi.DTO.Post.categoryDTO;
   import com.example.demoapi.DTO.Post.createDTO;
   import com.example.demoapi.DTO.Post.postImg;
   import com.example.demoapi.DTO.User.ReportDTO;
@@ -18,6 +19,7 @@
   import org.springframework.stereotype.Repository;
   import org.springframework.stereotype.Service;
 
+  import java.util.ArrayList;
   import java.util.Date;
   import java.util.List;
   import java.util.UUID;
@@ -161,6 +163,7 @@
         post.setCategory(categoryRepository.findCategoryById(createDTO.getCategoryid()));
         post.setUser(userRepository.findUserById(createDTO.getUserid()));
         post.setActive(true);
+        post.setTitle(createDTO.getTitle());
         post.setCreateTime(new Date());
         post.setContent(createDTO.getContent());
         post.setExchange(createDTO.isExchange());
@@ -236,6 +239,31 @@
     public Post getPostbyPostid(String postid) {
       try {
         return postRepository.findPostById(postid);
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return null;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return null;
+      }
+    }
+
+    @Override
+    public List<categoryDTO> getCategoryDTO() {
+      try {
+        List<Category> listcate = categoryRepository.getCategories();
+        List<categoryDTO> listhome = new ArrayList<>();
+        int numberofpost,numberofcomment;
+        for (Category c: listcate
+             ) {
+          categoryDTO home = new categoryDTO();
+          home.setName(c.getName());
+          home.setId(c.getId().toString());
+          home.setNumberpost(categoryRepository.getNumberOfPostbyCate(c.getId()));
+          home.setNumbercomment(categoryRepository.getNumberofCommentbyCate(c.getId()));
+          listhome.add(home);
+        }
+        return listhome;
       } catch (DataIntegrityViolationException e) {
         e.printStackTrace();
         return null;

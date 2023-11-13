@@ -1,5 +1,6 @@
 package com.example.demoapi.Service.Post;
 
+import com.example.demoapi.DTO.Post.categoryDTO;
 import com.example.demoapi.DTO.Post.createDTO;
 import com.example.demoapi.DTO.Post.postImg;
 import com.example.demoapi.DTO.User.ReportDTO;
@@ -35,4 +36,5 @@ public interface PostService {
     String createPost(createDTO post,String breadId);
     List<Post> searchPostsByContent(String key);
     Post getPostbyPostid(String postid);
+    List<categoryDTO> getCategoryDTO();
 }

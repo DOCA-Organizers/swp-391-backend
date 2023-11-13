@@ -19,6 +19,9 @@ public class Post {
     @Column(name = "id", nullable = false, updatable = false, unique = true)
     private String id;
 
+    @Column(name= "title",nullable = false)
+    private String  title;
+
     @Column(name= "content",nullable = false)
     private String  content;
 

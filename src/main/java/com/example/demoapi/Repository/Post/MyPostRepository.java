@@ -38,4 +38,6 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
     @Transactional
     Integer changePostisSold(String postid);
 
+    @Query(value = "select count(id) from tblPost where categoryid=?1 ",nativeQuery = true)
+    int getNumofPostInCategory(String category);
 }

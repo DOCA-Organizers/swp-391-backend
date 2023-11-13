@@ -13,6 +13,7 @@ import java.util.List;
 public class createDTO {
     private String userid;
     private Integer categoryid;
+    private String title;
     private String  content;
     private boolean exchange;
     private String pet_breed;
