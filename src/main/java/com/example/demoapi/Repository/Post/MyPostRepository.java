@@ -42,4 +42,7 @@ public interface MyPostRepository extends JpaRepository<Post,String> {
 
     @Query(value = "select count(id) from tblPost where categoryid=?1 ",nativeQuery = true)
     int getNumofPostInCategory(String category);
+
+    @Query(value = "select * from tblPost where id in (select top 10 postid from tblComment where isactive=1 group by postid order by count(id) desc) and isactive=1 and YEAR(createtime)=?1 and MONTH(createtime)=?1",nativeQuery = true)
+    List<Post> getTop10PostReactInMonthAndYear(int year , int mount);
 }

@@ -300,7 +300,20 @@
       }
     }
 
-    @Override
+      @Override
+      public List<Post> getTop10PostReact(int year, int month) {
+        try {
+          return postRepository.getTop10PostReactInMonthAndYear(year,month);
+        } catch (DataIntegrityViolationException e) {
+          e.printStackTrace();
+          return null;
+        } catch (Exception e) {
+          e.printStackTrace();
+          return null;
+        }
+      }
+
+      @Override
   public boolean createComment(String userId, String postId, String content) {
     try {
       Comment comment = new Comment();

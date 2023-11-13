@@ -311,5 +311,13 @@ public class PostResource {
             return ResponseEntity.status(HttpStatus.OK).body(list);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
     }
+    @GetMapping("/post/top10/year={year}month={month}")
+    public ResponseEntity<?> getTop10(@PathVariable("year") int year,@PathVariable("month") int month) {
+        List<Post> list = postService.getTop10PostReact(year,month);
+        if (list != null)
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("false");
+    }
+
 
 }

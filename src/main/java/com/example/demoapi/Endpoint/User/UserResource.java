@@ -35,6 +35,7 @@ public class UserResource {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cannot find user");
     }
+
     @PostMapping("/register")
     public ResponseEntity<?> createUser(@RequestBody User user){
         if(userService.isUserNameDupplicated(user.getUsername()) || userService.isEmailDupplicated(user.getEmail())) {

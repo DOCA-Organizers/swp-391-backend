@@ -39,4 +39,5 @@ public interface PostService {
     List<categoryDTO> getCategoryDTO();
     List<Post> getall();
     int getNumberofReport();
+    List<Post> getTop10PostReact(int year,int month);
 }
