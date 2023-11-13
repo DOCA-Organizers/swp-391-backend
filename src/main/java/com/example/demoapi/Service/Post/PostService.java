@@ -38,4 +38,5 @@ public interface PostService {
     Post getPostbyPostid(String postid);
     List<categoryDTO> getCategoryDTO();
     List<Post> getall();
+    int getNumberofReport();
 }

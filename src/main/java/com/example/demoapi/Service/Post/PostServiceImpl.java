@@ -288,6 +288,19 @@
     }
 
     @Override
+    public int getNumberofReport() {
+      try {
+        return reportRepository.countReport();
+      } catch (DataIntegrityViolationException e) {
+        e.printStackTrace();
+        return 0;
+      } catch (Exception e) {
+        e.printStackTrace();
+        return 0;
+      }
+    }
+
+    @Override
   public boolean createComment(String userId, String postId, String content) {
     try {
       Comment comment = new Comment();

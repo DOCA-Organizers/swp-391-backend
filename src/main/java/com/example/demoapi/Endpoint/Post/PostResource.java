@@ -74,6 +74,13 @@ public class PostResource {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Count react failed!");
     }
+    @GetMapping("/manage/report")
+    public ResponseEntity<?> countReport() {
+        if (postService.getNumberofReport()!=0) {
+            return ResponseEntity.status(HttpStatus.OK).body(postService.getNumberofReport());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0);
+    }
 
     @GetMapping("/report/count")
     public ResponseEntity<?> countPostByReport() {

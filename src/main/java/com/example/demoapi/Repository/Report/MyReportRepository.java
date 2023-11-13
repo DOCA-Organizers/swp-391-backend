@@ -51,4 +51,7 @@ public interface MyReportRepository extends JpaRepository<Report, String> {
     }
     @Query(value = "select * from tblReport where postid = ?1",nativeQuery = true)
     List<Report> getReportsByPostId(String postid);
+
+    @Query(value = "select count (id) from [dbo].[tblReport] where [isactive] = 1", nativeQuery = true)
+    Integer countReport();
 }
