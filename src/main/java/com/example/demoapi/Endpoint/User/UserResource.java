@@ -116,5 +116,12 @@ public class UserResource {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("list null");
     }
-
+    @GetMapping("/manage/count/user")
+    public ResponseEntity<?> countUser() {
+       int list = userService.countUserisActive();
+        if(list!=0) {
+            return ResponseEntity.status(HttpStatus.OK).body(list);
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("null");
+    }
 }

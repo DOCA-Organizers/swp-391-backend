@@ -429,4 +429,18 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public int countUserisActive() {
+        try {
+           int list = userRepository.countUserIsActive();
+           return list;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 }
