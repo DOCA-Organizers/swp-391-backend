@@ -50,9 +50,20 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<User> findAll() {
+    public List<userDTO> findAll() {
         try {
-            return userRepository.findAll();
+            List<userDTO> list = new ArrayList<>();
+            List<User> listUser = userRepository.findAll();
+            for (User u: listUser
+                 ) {
+                userDTO user = new userDTO();
+                user.setUser(u);
+                user.setRole(roleRepository.GetRoleByUserId(u.getId()));
+                user.setToken("null");
+                list.add(user);
+            }
+            return list;
+
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             return null;

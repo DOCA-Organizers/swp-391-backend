@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.List;
 public interface UserService {
     User searchUserByUserName(String username);
-    List<User> findAll();
+    List<userDTO> findAll();
     boolean save(User user);
     boolean saveUser_Role(User user);
     boolean updateUserInfo(User user, String id);
