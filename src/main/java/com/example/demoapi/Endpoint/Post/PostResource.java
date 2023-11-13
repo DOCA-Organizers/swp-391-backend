@@ -43,7 +43,7 @@ public class PostResource {
     private BookmarkService bookmarkService;
     @Autowired
     private PetService petService;
-    @PostMapping("/react/{userid}/{id}")
+    @PostMapping("/React/{userid}/{id}")
     public ResponseEntity<?> reactAPostOrComment(@PathVariable("userid") String userid, @PathVariable("id") String id) {
         if (postService.reactAPostOrComment(userid, id, id)) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
@@ -104,7 +104,7 @@ public class PostResource {
         return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @PostMapping("/comment")
+    @PostMapping("/Comment")
     public ResponseEntity<?> createComment(@RequestBody commentDTO commentDTO) {
         if (postService.createComment(commentDTO.getUserId(), commentDTO.getPostId(), commentDTO.getContent())) {
             return ResponseEntity.status(HttpStatus.OK).body(true);
