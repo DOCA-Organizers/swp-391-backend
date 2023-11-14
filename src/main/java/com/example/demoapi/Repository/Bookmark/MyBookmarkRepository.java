@@ -15,6 +15,8 @@ import java.util.List;
 public interface MyBookmarkRepository extends JpaRepository<Bookmark,Integer> {
     @Query(value = "select * from tblBookmark where userid = ?1 and postid = ?2 and isactive=1",nativeQuery = true)
     Bookmark findBookmarkByUseridAndPostid(String userid, String postid);
+    @Query(value = "select * from tblBookmark where userid = ?1 and postid = ?2",nativeQuery = true)
+    Bookmark findBookmarkByUseridAndPostidUp(String userid, String postid);
 
     @Query(value = "update [dbo].[tblBookmark] \n" +
             "set [isactive] = \n" +
