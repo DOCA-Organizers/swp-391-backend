@@ -63,8 +63,8 @@ public interface MyUserRepository extends JpaRepository<User, String>{
 
     @Query(value = "select count(id) from tblPost where userid = ?1 and isactive=1",nativeQuery = true)
     int countPostsbyuserid(String userid);
-    @Query(value="select count(id) from tblReact where userid = ?1 and isactive=1",nativeQuery = true)
-    int countReactbyuserid(String userid);
+    @Query(value="select count(id) from tblReact where postid = ?1 and isactive=1",nativeQuery = true)
+    int countReactbyPostid(String userid);
     @Query(value = "select count(id) from tblComment where userid = ?1 and isactive=1",nativeQuery = true)
     int countCommentId(String userid);
 }

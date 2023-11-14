@@ -4,9 +4,11 @@ import com.example.demoapi.DTO.User.loginDTO;
 import com.example.demoapi.DTO.User.profileDTO;
 import com.example.demoapi.DTO.User.topDTO;
 import com.example.demoapi.DTO.User.userDTO;
+import com.example.demoapi.Entity.Post.Post;
 import com.example.demoapi.Entity.User.Role;
 import com.example.demoapi.Entity.User.User;
 import com.example.demoapi.Entity.User.User_Role;
+import com.example.demoapi.Repository.Post.PostRepository;
 import com.example.demoapi.Repository.Role.RoleRepository;
 import com.example.demoapi.Repository.User.UserRepository;
 import com.example.demoapi.Repository.User_Role.User_RoleRepository;
@@ -38,6 +40,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @Autowired
     private User_RoleRepository user_roleRepository;
@@ -309,7 +314,14 @@ public class UserServiceImpl implements UserService {
             profile.setUser(userRepository.findUserById(userid));
             profile.setRole(roleRepository.GetRoleByUserId(userid));
             profile.setDatestart(userRepository.getDateStart(userid));
-            profile.setNumofreact(userRepository.countReactbyuserid(userid));
+            List<Post> listpost = postRepository.findPostsByUser(userRepository.findUserById(userid));
+            int react=0;
+            for (Post p: listpost
+                 ) {
+                int i = userRepository.countReactbyPostid(p.getId());
+                react = react + i;
+            }
+            profile.setNumofreact(react);
             profile.setNumofpost(userRepository.countPostsbyuserid(userid));
             profile.setNumofcomment(userRepository.countCommentId(userid));
             return profile;
